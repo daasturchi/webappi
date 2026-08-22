@@ -968,7 +968,10 @@
         tg.ready();
         tg.expand();
 
-        const API_URL = 'http://localhost:5000';
+        // 🔧 SOZLAMALAR
+        const API_URL = 'http://localhost:5000'; // Backend manzili
+        const BOT_USERNAME = "tapuc_bot"; // @ belgisisiz bot username
+        const MINI_APP_SHORT_NAME = "app"; // BotFather /newapp da bergan nom
         const COIN_TO_UC_RATE = 10000;
         const UC_AMOUNT = 60;
         const REFERAL_REWARD = 100;
@@ -1225,7 +1228,8 @@
             document.getElementById('loadingOverlay').classList.remove('active');
         }
 
-        async function init() {
+        // ===================== BACKEND BILAN ULANISH =====================
+        async function fetchUserData() {
             try {
                 const response = await fetch(`${API_URL}/api/user/init`, {
                     method: 'POST',
@@ -1237,7 +1241,7 @@
                     userData.telegram_id = data.telegram_id;
                     userData.coins = data.coins || 0;
                     userData.uc = data.uc || 0;
-                    userData.energy = Math.min(data.energy || 500, MAX_ENERGY);
+                    userData.energy = data.energy || 500;
                     userData.tapPower = data.tap_power || 1;
                     userData.total_ads_watched = data.total_ads_watched || 0;
                     userData.tasks = data.tasks || {};
@@ -1246,11 +1250,137 @@
                     updateUI();
                 }
             } catch (e) {
-                userData.telegram_id = 123456;
-                userData.is_admin = true;
-                userData.referrals = [];
-                updateUI();
+                console.log('Backendga ulanishda xatolik');
             }
+        }
+
+        function saveState() {
+            fetch(`${API_URL}/api/user/update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ init_data: tg.initData, coins: userData.coins, energy: userData.energy })
+            }).catch(() => {});
+        }
+
+        async function claimReward() {
+            const adTask = document.getElementById('adTask');
+            if (adTask.classList.contains('completed')) return;
+
+            showLoading('Yuklanmoqda...');
+            try {
+                const response = await fetch(`${API_URL}/api/task/claim-ad`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData })
+                });
+                const data = await response.json();
+                hideLoading();
+                if (data.success) {
+                    userData.coins = data.coins;
+                    updateUI();
+                    showToast(`+${data.reward} Coin!`, 'success');
+                } else if (data.error === 'cooldown') {
+                    showToast('Reklama ko\'rish uchun kutib turing', 'error');
+                } else {
+                    showToast('Xatolik yuz berdi', 'error');
+                }
+            } catch (e) {
+                hideLoading();
+                showToast('Serverga ulanishda xatolik', 'error');
+            }
+        }
+
+        async function checkSubscription(taskId, reward) {
+            const cardId = taskId === 'channel1' ? 'taskChannel1' : 'taskChannel2';
+            const card = document.getElementById(cardId);
+            if (card.classList.contains('completed')) return;
+
+            showLoading('Tekshirilmoqda...');
+            try {
+                const response = await fetch(`${API_URL}/api/task/check-subscription`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData, task_id: taskId })
+                });
+                const data = await response.json();
+                hideLoading();
+                if (data.success) {
+                    userData.coins = data.coins;
+                    updateUI();
+                    card.classList.add('completed');
+                    showToast(`+${data.reward} Coin!`, 'success');
+                } else if (data.error === 'not_subscribed') {
+                    showToast('Obuna topilmadi!', 'error');
+                } else if (data.error === 'already_claimed') {
+                    card.classList.add('completed');
+                } else {
+                    showToast('Serverga ulanishda xatolik', 'error');
+                }
+            } catch (e) {
+                hideLoading();
+                showToast('Serverga ulanishda xatolik', 'error');
+            }
+        }
+
+        function exchangeCoinToUC() {
+            if (selectedUCAmount === 0) {
+                showToast('UC paketini tanlang!', 'error');
+                return;
+            }
+            
+            const gameId = document.getElementById('gameIdInput').value.trim();
+            if (gameId === '') {
+                showToast('O\'yin ID ni kiriting!', 'error');
+                return;
+            }
+            
+            const cost = (selectedUCAmount / UC_AMOUNT) * COIN_TO_UC_RATE;
+            
+            if (userData.coins >= cost) {
+                userData.coins -= cost;
+                userData.uc += selectedUCAmount;
+                updateUI();
+                
+                fetch(`${API_URL}/api/uc/exchange`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        init_data: tg.initData,
+                        uc_amount: selectedUCAmount,
+                        game_id: gameId
+                    })
+                }).catch(() => {});
+                
+                showToast(`+${selectedUCAmount} UC yuborildi! ID: ${gameId}`, 'success');
+                
+                selectedUCAmount = 0;
+                document.getElementById('gameIdInput').value = '';
+                document.querySelectorAll('.uc-pack-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+            } else {
+                showToast('Coin yetarli emas!', 'error');
+            }
+        }
+
+        function copyReferalLink() {
+            const link = document.getElementById('referalLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast(translations[currentLang].referalCopied, 'success');
+            });
+        }
+
+        function updateReferalLink() {
+            if (userData.telegram_id) {
+                document.getElementById('referalLink').textContent =
+                    `https://t.me/${BOT_USERNAME}/${MINI_APP_SHORT_NAME}?startapp=ref_${userData.telegram_id}`;
+            }
+        }
+
+        // ===================== BOSHLANG'ICH YUKLASH =====================
+        async function init() {
+            await fetchUserData();
+            updateReferalLink();
             startEnergyRegen();
         }
 
@@ -1274,7 +1404,6 @@
             effect.className = 'coin-tap-effect';
             effect.textContent = `+${userData.tapPower}`;
             
-            // Bosilgan joydan chiqadi (agar event bo'lsa)
             if (event) {
                 effect.style.left = event.clientX + 'px';
                 effect.style.top = event.clientY + 'px';
@@ -1285,21 +1414,6 @@
             
             document.body.appendChild(effect);
             setTimeout(() => effect.remove(), 600);
-        }
-
-        function saveState() {
-            fetch(`${API_URL}/api/user/update`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ init_data: tg.initData, coins: userData.coins, energy: userData.energy })
-            }).catch(() => {});
-        }
-
-        function copyReferalLink() {
-            const link = document.getElementById('referalLink').textContent;
-            navigator.clipboard.writeText(link).then(() => {
-                showToast(translations[currentLang].referalCopied, 'success');
-            });
         }
 
         function selectUC(amount) {
@@ -1314,48 +1428,6 @@
             showToast(amount + ' UC ' + translations[currentLang].ucSelected, 'success');
         }
 
-        function exchangeCoinToUC() {
-            if (selectedUCAmount === 0) {
-                showToast(translations[currentLang].selectUCPacket, 'error');
-                return;
-            }
-            
-            const gameId = document.getElementById('gameIdInput').value.trim();
-            if (gameId === '') {
-                showToast(translations[currentLang].enterGameId, 'error');
-                return;
-            }
-            
-            const cost = (selectedUCAmount / UC_AMOUNT) * COIN_TO_UC_RATE;
-            
-            if (userData.coins >= cost) {
-                userData.coins -= cost;
-                userData.uc += selectedUCAmount;
-                updateUI();
-                
-                fetch(`${API_URL}/api/uc/exchange`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        init_data: tg.initData,
-                        uc_amount: selectedUCAmount,
-                        game_id: gameId
-                    })
-                }).catch(() => {});
-                
-                showToast(`+${selectedUCAmount} UC ${translations[currentLang].ucSent} ID: ${gameId}`, 'success');
-                
-                selectedUCAmount = 0;
-                document.getElementById('gameIdInput').value = '';
-                document.querySelectorAll('.uc-pack-card').forEach(card => {
-                    card.classList.remove('selected');
-                });
-            } else {
-                showToast(translations[currentLang].notEnoughCoins, 'error');
-            }
-        }
-
-        applyTranslations();
         init();
     </script>
 </body>
