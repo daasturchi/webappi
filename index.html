@@ -1373,7 +1373,7 @@
         function updateReferalLink() {
             if (userData.telegram_id) {
                 document.getElementById('referalLink').textContent =
-                    `https://t.me/${BOT_USERNAME}/${MINI_APP_SHORT_NAME}?startapp=ref_${userData.telegram_id}`;
+                    `https://t.me/${BOT_USERNAME}/?startapp=ref_${userData.telegram_id}`;
             }
         }
 
