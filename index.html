@@ -6,7 +6,6 @@
     <title>Coin App</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg: #0a0a0a; --card: #111111; --gold: #f5c518; --gold-light: #ffd700; --gold-dark: #c49b00;
@@ -16,95 +15,65 @@
             font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh;
             display: flex; justify-content: center; user-select: none; -webkit-tap-highlight-color: transparent; overflow-x: hidden;
         }
-        body::after {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, rgba(245,197,24,0.03) 0%, transparent 70%); pointer-events: none;
-        }
         .container { width: 100%; max-width: 420px; min-height: 100vh; padding: 10px 12px 85px; position: relative; z-index: 1; display: flex; flex-direction: column; }
         .icon { width: 24px; height: 24px; stroke: var(--gold); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
         .icon-sm { width: 18px; height: 18px; }
+        .coin-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; }
+        .coin-icon-lg { width: 36px; height: 36px; object-fit: contain; vertical-align: middle; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(145deg, #151515, #0d0d0d); border: 2px solid var(--border); border-radius: 20px; padding: 10px 15px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.6); position: relative; z-index: 50; }
         .top-left, .top-right { display: flex; align-items: center; gap: 8px; }
         .top-icon-wrap { width: 36px; height: 36px; border-radius: 50%; background: rgba(245,197,24,0.1); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s; }
-        .top-icon-wrap:active { transform: scale(0.9); background: rgba(245,197,24,0.2); }
-        .global-coin-display { display: flex; align-items: center; gap: 4px; }
-        .global-coin-value { font-size: 20px; font-weight: 900; color: var(--gold); letter-spacing: -1px; }
-        .lang-dropdown { position: absolute; top: 55px; left: 15px; background: #1a1a1a; border: 1.5px solid var(--border); border-radius: 12px; padding: 8px; display: none; z-index: 100; box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
+        .top-icon-wrap:active { transform: scale(0.9); }
+        .lang-dropdown { position: absolute; top: 55px; left: 15px; background: #1a1a1a; border: 1.5px solid var(--border); border-radius: 12px; padding: 8px; display: none; z-index: 100; }
         .lang-dropdown.active { display: block; }
-        .lang-option { padding: 10px 15px; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; color: var(--text); }
-        .lang-option:hover { background: rgba(245,197,24,0.1); color: var(--gold); }
+        .lang-option { padding: 10px 15px; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 8px; }
         .coin-area { text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .coin-button { width: 260px; height: 260px; background: transparent; border: none; cursor: pointer; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; }
+        .coin-button { width: 260px; height: 260px; background: transparent; border: none; cursor: pointer; transition: transform 0.1s; }
         .coin-button:active { transform: scale(0.9); }
         .coin-button img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 45px rgba(245,197,24,0.7)); animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .coin-display { font-size: 56px; font-weight: 900; color: var(--gold); letter-spacing: -2px; text-shadow: 0 0 25px rgba(245,197,24,0.5); margin-bottom: 5px; line-height: 1; }
+        .coin-display { font-size: 48px; font-weight: 900; color: var(--gold); letter-spacing: -2px; text-shadow: 0 0 25px rgba(245,197,24,0.5); margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .energy-wrap { margin-top: auto; margin-bottom: 70px; padding-top: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; }
         .energy-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; width: 80%; }
-        .energy-label { font-size: 12px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+        .energy-label { font-size: 12px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
         .energy-value { font-size: 12px; font-weight: 700; color: var(--gold); }
-        .energy-bar { width: 80%; height: 12px; background: #1a1a1a; border-radius: 50px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .energy-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 50px; transition: width 0.25s ease; }
+        .energy-bar { width: 80%; height: 12px; background: #1a1a1a; border-radius: 50px; overflow: hidden; }
+        .energy-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 50px; transition: width 0.25s; }
         .uc-packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .uc-pack-card { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 15px; cursor: pointer; transition: all 0.25s; }
-        .uc-pack-card:active { transform: scale(0.95); }
-        .uc-pack-card.selected { border-color: var(--gold); box-shadow: 0 8px 20px rgba(245,197,24,0.25); background: rgba(245,197,24,0.08); }
-        .uc-pack-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .uc-pack-tag { font-size: 12px; font-weight: 700; color: var(--text-dim); }
-        .uc-pack-amount { font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: -1px; margin-bottom: 2px; }
-        .uc-pack-price { font-size: 13px; color: var(--text-dim); font-weight: 600; }
-        .task-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px; margin: 10px 0; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; }
-        .task-card:active { transform: scale(0.97); background: #1a1a1a; }
+        .uc-pack-card { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 15px; cursor: pointer; }
+        .uc-pack-card.selected { border-color: var(--gold); background: rgba(245,197,24,0.08); }
+        .uc-pack-amount { font-size: 28px; font-weight: 900; color: var(--gold); }
+        .uc-pack-price { font-size: 13px; color: var(--text-dim); }
+        .task-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px; margin: 10px 0; display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .task-card.completed { opacity: 0.6; }
-        .task-card.completed .task-check { display: flex; }
-        .task-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(245, 197, 24, 0.1); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
-        .task-icon .icon { stroke: var(--gold); width: 20px; height: 20px; }
+        .task-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(245,197,24,0.1); display: flex; justify-content: center; align-items: center; font-size: 20px; }
         .task-info { flex: 1; }
         .task-name { font-size: 15px; font-weight: 700; }
-        .task-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-        .task-check { width: 30px; height: 30px; border-radius: 50%; background: var(--green); display: none; justify-content: center; align-items: center; flex-shrink: 0; }
-        .task-check svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; }
-        .referal-section { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px; margin: 10px 0; }
-        .referal-title { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .referal-progress-bar { width: 100%; height: 10px; background: #1a1a1a; border-radius: 50px; overflow: hidden; margin-bottom: 10px; }
-        .referal-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 50px; transition: width 0.5s ease; }
-        .referal-stats { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .referal-stat-item { text-align: center; }
-        .referal-stat-value { font-size: 20px; font-weight: 900; color: var(--gold); }
-        .referal-stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
-        .referal-link-box { background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 12px; color: var(--text-dim); word-break: break-all; margin-bottom: 10px; }
-        .referal-btn { width: 100%; background: var(--gold); color: #000; border: none; border-radius: 50px; padding: 12px; font-size: 14px; font-weight: 800; cursor: pointer; }
-        .friends-list { margin-top: 15px; }
-        .friends-list-title { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
-        .friend-item { display: flex; align-items: center; gap: 10px; background: #1a1a1a; border-radius: 12px; padding: 10px; margin-bottom: 8px; }
-        .friend-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: 900; color: #000; }
-        .friend-name { flex: 1; font-size: 14px; font-weight: 700; }
-        .friend-reward { font-size: 12px; font-weight: 800; color: var(--gold); }
-        .uc-input { width: 100%; background: #1a1a1a; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; color: #fff; font-size: 16px; font-weight: 700; text-align: center; margin: 10px 0; }
-        .uc-input:focus { outline: none; border-color: var(--gold); }
-        .exchange-btn { width: 100%; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); color: #000; border: none; border-radius: 50px; padding: 18px 40px; font-size: 18px; font-weight: 900; cursor: pointer; letter-spacing: 2px; text-transform: uppercase; margin-top: 20px; box-shadow: 0 5px 20px rgba(245,197,24,0.4); transition: all 0.2s; }
-        .exchange-btn:active { transform: scale(0.95); }
+        .task-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+        .task-check { width: 30px; height: 30px; border-radius: 50%; background: var(--green); display: none; justify-content: center; align-items: center; font-size: 16px; }
+        .task-check.show { display: flex; }
+        .task-action-btn { background: var(--gold); color: #000; border: none; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 800; cursor: pointer; }
         .admin-section { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 15px; margin: 10px 0; }
-        .admin-title { font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 15px; text-align: center; }
-        .admin-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .admin-stat-card { background: #1a1a1a; border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; }
-        .admin-stat-value { font-size: 24px; font-weight: 900; color: var(--gold); }
-        .admin-stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
-        .admin-input, .admin-textarea { width: 100%; background: #1a1a1a; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 14px; margin: 8px 0; }
-        .admin-textarea { resize: none; min-height: 80px; }
-        .admin-btn { width: 100%; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); color: #000; border: none; border-radius: 50px; padding: 14px 30px; font-size: 14px; font-weight: 900; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
-        .admin-btn:active { transform: scale(0.95); }
-        .bottom-nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 396px; background: var(--card); border: 1.5px solid var(--border); border-radius: 50px; padding: 10px 6px; display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 20px rgba(0,0,0,0.5); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 10px; border-radius: 35px; transition: all 0.2s; flex: 1; }
+        .admin-title { font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 15px; text-align: center; }
+        .admin-input, .promo-input { width: 100%; background: #1a1a1a; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 14px; margin: 8px 0; }
+        .admin-btn, .promo-btn { width: 100%; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); color: #000; border: none; border-radius: 50px; padding: 12px; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+        .bottom-nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 396px; background: var(--card); border: 1.5px solid var(--border); border-radius: 50px; padding: 10px 6px; display: flex; justify-content: space-around; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 10px; border-radius: 35px; flex: 1; }
         .nav-item.active { background: rgba(245,197,24,0.1); }
         .nav-item.active .icon { stroke: var(--gold); }
         .nav-item.active .nav-label { color: var(--gold); }
-        .nav-label { font-size: 8px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .nav-label { font-size: 8px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; }
         .nav-item .icon { stroke: var(--text-dim); }
         .page { display: none; }
         .page.active { display: flex; flex-direction: column; flex: 1; }
-        .toast { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); padding: 14px 30px; border-radius: 50px; font-weight: 800; z-index: 3000; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); animation: slideDown 0.3s ease-out forwards; }
-        @keyframes slideDown { from { transform: translate(-50%, -100%); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+        .profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .profile-modal.active { display: flex; }
+        .profile-content { background: var(--card); border: 2px solid var(--border); border-radius: 20px; padding: 20px; width: 90%; max-width: 380px; position: relative; }
+        .profile-close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: var(--text-dim); }
+        .profile-info { margin-bottom: 15px; }
+        .profile-label { color: var(--text-dim); font-size: 12px; }
+        .profile-value { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .toast { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); padding: 14px 30px; border-radius: 50px; font-weight: 800; z-index: 3000; font-size: 15px; }
         .toast.success { background: #1a2e1a; color: var(--green); border: 2px solid var(--green); }
         .toast.error { background: #2e1a1a; color: var(--red); border: 2px solid var(--red); }
     </style>
@@ -131,9 +100,12 @@
 
         <div class="page active" id="pageTap">
             <div class="coin-area">
-                <div class="coin-display" id="coinDisplay">0</div>
-                <button class="coin-button" onclick="handleTap(event)">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='%23f5c518' stroke='%23d4a017' stroke-width='6'/%3E%3Ctext x='100' y='120' font-size='90' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23000'%3E¢%3C/text%3E%3C/svg%3E" alt="Coin">
+                <div class="coin-display">
+                    <img src="coin.png" alt="Coin" class="coin-icon-lg">
+                    <span id="coinDisplay">0</span>
+                </div>
+                <button class="coin-button" onclick="handleTap()">
+                    <img src="coin.png" alt="Coin">
                 </button>
             </div>
             <div class="energy-wrap">
@@ -145,51 +117,42 @@
             </div>
         </div>
 
-        <div class="page" id="pageBoost">
-            <div class="referal-section">
-                <div class="referal-title">👥 <span data-i18n="referral">Referal Dastur</span></div>
-                <div class="referal-progress-bar"><div class="referal-progress-fill" id="referalProgressFill" style="width: 0%;"></div></div>
-                <div class="referal-stats">
-                    <div class="referal-stat-item"><div class="referal-stat-value" id="referalCount">0</div><div class="referal-stat-label" data-i18n="invites">Takliflar</div></div>
-                    <div class="referal-stat-item"><div class="referal-stat-value">1000</div><div class="referal-stat-label" data-i18n="target">Maqsad</div></div>
-                    <div class="referal-stat-item"><div class="referal-stat-value" id="referalEarned">0</div><div class="referal-stat-label" data-i18n="earned">Yig'ilgan</div></div>
-                </div>
-                <div class="referal-link-box" id="referalLink">https://t.me/YourBot?start=ref_123456</div>
-                <button class="referal-btn" onclick="copyReferalLink()" data-i18n="copy">📋 Nusxa olish</button>
-            </div>
-            <div class="friends-list">
-                <div class="friends-list-title" data-i18n="friends">Taklif qilgan do'stlaringiz</div>
-                <div id="friendsListContainer"></div>
-            </div>
-        </div>
-
         <div class="page" id="pageTasks">
-            <div id="tasksContainer"></div>
-            <div class="admin-section" style="margin-top: 20px;">
-                <div class="admin-title" data-i18n="promo_code">🎁 Promo Code</div>
-                <input type="text" class="admin-input" id="promoCodeInput" placeholder="PROMO CODE">
-                <button class="admin-btn" onclick="redeemPromo()" data-i18n="activate">Aktivlashtirish</button>
+            <div class="admin-section" style="margin-top: 0;">
+                <div class="admin-title">🎁 <span data-i18n="promo_code">PROMO CODE</span></div>
+                <input type="text" class="promo-input" id="promoCodeInput" placeholder="PROMO CODE">
+                <button class="promo-btn" onclick="redeemPromo()" data-i18n="activate">AKTIVLASHTIRISH</button>
             </div>
+
+            <div class="task-card" id="adTask">
+                <div class="task-icon">📺</div>
+                <div class="task-info">
+                    <div class="task-name" data-i18n="watch_ad">Reklama ko'rish</div>
+                    <div class="task-desc"><img src="coin.png" alt="Coin" class="coin-icon"> +100 Coin | <span id="adCountDisplay">0/5</span></div>
+                </div>
+                <button class="task-action-btn" onclick="claimAdReward()" data-i18n="watch">Ko'rish</button>
+            </div>
+
+            <div id="tasksContainer"></div>
         </div>
 
         <div class="page" id="pageUCExchange">
             <div class="uc-packs-grid">
-                <div class="uc-pack-card" onclick="selectUC(60)" id="ucCard60"><div class="uc-pack-top"><span class="uc-pack-tag">Starter</span></div><div class="uc-pack-amount">60 UC</div><div class="uc-pack-price">10,000 Coin</div></div>
-                <div class="uc-pack-card" onclick="selectUC(120)" id="ucCard120"><div class="uc-pack-top"><span class="uc-pack-tag">Popular</span>🔥</div><div class="uc-pack-amount">120 UC</div><div class="uc-pack-price">20,000 Coin</div></div>
-                <div class="uc-pack-card" onclick="selectUC(360)" id="ucCard360"><div class="uc-pack-top"><span class="uc-pack-tag">Pro</span></div><div class="uc-pack-amount">360 UC</div><div class="uc-pack-price">60,000 Coin</div></div>
-                <div class="uc-pack-card" onclick="selectUC(720)" id="ucCard720"><div class="uc-pack-top"><span class="uc-pack-tag">Elite</span>⚡</div><div class="uc-pack-amount">720 UC</div><div class="uc-pack-price">120,000 Coin</div></div>
+                <div class="uc-pack-card" onclick="selectUC(60)" id="ucCard60"><div class="uc-pack-amount">60 UC</div><div class="uc-pack-price">10,000 Coin</div></div>
+                <div class="uc-pack-card" onclick="selectUC(120)" id="ucCard120"><div class="uc-pack-amount">120 UC</div><div class="uc-pack-price">20,000 Coin</div></div>
+                <div class="uc-pack-card" onclick="selectUC(360)" id="ucCard360"><div class="uc-pack-amount">360 UC</div><div class="uc-pack-price">60,000 Coin</div></div>
+                <div class="uc-pack-card" onclick="selectUC(720)" id="ucCard720"><div class="uc-pack-amount">720 UC</div><div class="uc-pack-price">120,000 Coin</div></div>
             </div>
-            <input type="text" class="uc-input" id="gameIdInput" placeholder="O'yin ID (birinchi raqam 5)" maxlength="10" pattern="[0-9]*" inputmode="numeric">
-            <button class="exchange-btn" onclick="exchangeCoinToUC()" data-i18n="exchange">YECHISH</button>
+            <input type="text" class="admin-input" id="gameIdInput" placeholder="O'yin ID (birinchi raqam 5)" maxlength="10" pattern="[0-9]*" inputmode="numeric">
+            <button class="admin-btn" onclick="exchangeCoinToUC()" data-i18n="exchange">YECHISH</button>
         </div>
 
         <div class="page" id="pageAdmin">
             <div class="admin-section">
                 <div class="admin-title">👑 ADMIN PANEL</div>
-                <div class="admin-stats-grid">
-                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminTotalUsers">0</div><div class="admin-stat-label">Users</div></div>
-                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminPendingRequests">0</div><div class="admin-stat-label">Requests</div></div>
-                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminTotalTasks">0</div><div class="admin-stat-label">Tasks</div></div>
+                <div class="admin-stats-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="admin-stat-card" style="background:#1a1a1a;border-radius:12px;padding:12px;text-align:center;"><div class="admin-stat-value" id="adminTotalUsers" style="font-size:24px;font-weight:900;color:var(--gold);">0</div><div class="admin-stat-label" style="font-size:10px;color:var(--text-dim);">Users</div></div>
+                    <div class="admin-stat-card" style="background:#1a1a1a;border-radius:12px;padding:12px;text-align:center;"><div class="admin-stat-value" id="adminPendingRequests" style="font-size:24px;font-weight:900;color:var(--gold);">0</div><div class="admin-stat-label" style="font-size:10px;color:var(--text-dim);">Requests</div></div>
                 </div>
             </div>
             <div class="admin-section">
@@ -197,30 +160,30 @@
                 <input type="text" class="admin-input" id="adminTaskTitle" placeholder="Vazifa nomi">
                 <input type="text" class="admin-input" id="adminTaskLink" placeholder="Kanal havolasi (@kanal)">
                 <input type="number" class="admin-input" id="adminTaskReward" placeholder="Mukofot (Coin)">
-                <button class="admin-btn" onclick="adminAddTask()">Vazifa qo'shish</button>
+                <button class="admin-btn" onclick="adminAddTask()">Qo'shish</button>
             </div>
             <div class="admin-section">
                 <div class="admin-title">🎁 PROMO CODE</div>
                 <input type="text" class="admin-input" id="adminPromoCode" placeholder="Promo Code">
-                <input type="number" class="admin-input" id="adminPromoReward" placeholder="Mukofot (Coin)">
+                <input type="number" class="admin-input" id="adminPromoReward" placeholder="Mukofot">
                 <input type="number" class="admin-input" id="adminPromoLimit" placeholder="Limit (-1 = cheksiz)">
-                <button class="admin-btn" onclick="adminAddPromo()">Promo qo'shish</button>
-            </div>
-        </div>
-
-        <div class="page" id="pageProfile">
-            <div class="admin-section">
-                <div class="admin-title">👤 PROFIL</div>
-                <div id="profileInfo"></div>
+                <button class="admin-btn" onclick="adminAddPromo()">Qo'shish</button>
             </div>
         </div>
 
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('pageTap')" id="navTap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg><span class="nav-label" data-i18n="tap">BOSISH</span></div>
-            <div class="nav-item" onclick="showPage('pageBoost')" id="navBoost"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><span class="nav-label" data-i18n="referral">REFERAL</span></div>
             <div class="nav-item" onclick="showPage('pageTasks')" id="navTasks"><svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h6"/></svg><span class="nav-label" data-i18n="tasks">VAZIFALAR</span></div>
             <div class="nav-item" onclick="showPage('pageUCExchange')" id="navUCExchange"><svg class="icon" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11v-1a4 4 0 014-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 01-4 4H3"/></svg><span class="nav-label" data-i18n="exchange">YECHISH</span></div>
             <div class="nav-item" onclick="showPage('pageAdmin')" id="navAdmin" style="display: none;"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg><span class="nav-label">ADMIN</span></div>
+        </div>
+    </div>
+
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <span class="profile-close" onclick="closeProfile()">✕</span>
+            <div class="admin-title">👤 PROFIL</div>
+            <div id="profileInfo"></div>
         </div>
     </div>
 
@@ -239,69 +202,55 @@
 
         let currentLang = localStorage.getItem('language') || 'uz';
         let userData = {
-            telegram_id: null,
-            username: '',
-            first_name: '',
-            coins: 0,
-            uc: 0,
-            energy: MAX_ENERGY,
-            tapPower: 1,
-            is_admin: false,
-            referrals: [],
-            tasks: {},
-            language: 'uz'
+            telegram_id: null, username: '', first_name: '', coins: 0, uc: 0,
+            energy: MAX_ENERGY, tapPower: 1, is_admin: false, referrals: [],
+            tasks: {}, language: 'uz', ad_count_today: 0, ad_daily_limit: 5
         };
         let selectedUCAmount = 0;
         let allTasks = [];
 
         const translations = {
             uz: {
-                tap: 'BOSISH', referral: 'REFERAL', tasks: 'VAZIFALAR', exchange: 'YECHISH',
-                energy: 'ENERGY', invites: 'Takliflar', target: 'Maqsad', earned: "Yig'ilgan",
-                copy: '📋 Nusxa olish', friends: "Taklif qilgan do'stlaringiz", no_friends: "Hozircha do'stlar yo'q",
-                promo_code: '🎁 Promo Code', activate: 'Aktivlashtirish',
+                tap: 'BOSISH', tasks: 'VAZIFALAR', exchange: 'YECHISH', energy: 'ENERGY',
+                promo_code: 'PROMO CODE', activate: 'AKTIVLASHTIRISH',
+                watch_ad: "Reklama ko'rish", watch: "Ko'rish",
                 energy_empty: 'Energiya tugadi!', not_enough_coins: 'Coin yetarli emas!',
-                uc_selected: 'UC tanlandi!', uc_sent: 'UC yuborildi!',
+                uc_selected: 'UC tanlandi!', uc_sent: 'Yechish so\'rovi yuborildi!',
                 select_packet: 'UC paketini tanlang!', enter_id: "O'yin ID ni kiriting!",
-                invalid_id: "ID faqat raqam va birinchi raqami 5 bo'lishi kerak!",
-                copied: 'Havola nusxalandi!', server_error: 'Serverda xatolik!',
-                subscribe: "Kanalga obuna bo'ling!", check: 'Tekshirish',
-                completed: 'Bajarildi!', already_claimed: 'Allaqachon bajarilgan!',
-                ad_watched: 'Reklama ko\'rildi! +100 Coin',
-                invalid_code: 'Noto\'g\'ri promo code!', limit_reached: 'Limit tugagan!',
-                already_used: 'Siz bu codeni ishlatgansiz!', promo_success: 'Promo code aktivlashtirildi!'
+                invalid_id: "ID birinchi raqami 5 bo'lishi kerak!",
+                server_error: 'Serverda xatolik!', subscribe: "Kanalga obuna bo'ling!",
+                check: 'Tekshirish', already_claimed: 'Allaqachon bajarilgan!',
+                ad_watched: '+100 Coin!', daily_limit: 'Bugungi reklama limiti tugadi!',
+                invalid_code: "Noto'g'ri promo code!", limit_reached: 'Limit tugagan!',
+                already_used: 'Siz bu codeni ishlatgansiz!', promo_success: 'Promo code aktiv!'
             },
             ru: {
-                tap: 'ТАП', referral: 'РЕФЕРАЛ', tasks: 'ЗАДАНИЯ', exchange: 'ВЫВОД',
-                energy: 'ЭНЕРГИЯ', invites: 'Приглашения', target: 'Цель', earned: 'Заработано',
-                copy: '📋 Копировать', friends: 'Приглашенные друзья', no_friends: 'Пока нет друзей',
-                promo_code: '🎁 Промокод', activate: 'Активировать',
+                tap: 'ТАП', tasks: 'ЗАДАНИЯ', exchange: 'ВЫВОД', energy: 'ЭНЕРГИЯ',
+                promo_code: 'ПРОМОКОД', activate: 'АКТИВИРОВАТЬ',
+                watch_ad: 'Смотреть рекламу', watch: 'Смотреть',
                 energy_empty: 'Энергия закончилась!', not_enough_coins: 'Недостаточно монет!',
-                uc_selected: 'UC выбрано!', uc_sent: 'UC отправлено!',
-                select_packet: 'Выберите пакет UC!', enter_id: 'Введите ID игры!',
-                invalid_id: 'ID должен состоять только из цифр и первая цифра 5!',
-                copied: 'Ссылка скопирована!', server_error: 'Ошибка сервера!',
-                subscribe: 'Подпишитесь на канал!', check: 'Проверить',
-                completed: 'Готово!', already_claimed: 'Уже выполнено!',
-                ad_watched: 'Реклама просмотрена! +100 Coin',
-                invalid_code: 'Неверный промокод!', limit_reached: 'Лимит исчерпан!',
-                already_used: 'Вы уже использовали этот код!', promo_success: 'Промокод активирован!'
+                uc_selected: 'UC выбрано!', uc_sent: 'Запрос отправлен!',
+                select_packet: 'Выберите пакет!', enter_id: 'Введите ID!',
+                invalid_id: 'Первая цифра ID должна быть 5!',
+                server_error: 'Ошибка сервера!', subscribe: 'Подпишитесь!',
+                check: 'Проверить', already_claimed: 'Уже выполнено!',
+                ad_watched: '+100 Coin!', daily_limit: 'Лимит на сегодня исчерпан!',
+                invalid_code: 'Неверный код!', limit_reached: 'Лимит исчерпан!',
+                already_used: 'Код уже использован!', promo_success: 'Код активирован!'
             },
             en: {
-                tap: 'TAP', referral: 'REFERRAL', tasks: 'TASKS', exchange: 'WITHDRAW',
-                energy: 'ENERGY', invites: 'Invites', target: 'Target', earned: 'Earned',
-                copy: '📋 Copy', friends: 'Invited Friends', no_friends: 'No friends yet',
-                promo_code: '🎁 Promo Code', activate: 'Activate',
-                energy_empty: 'Energy is empty!', not_enough_coins: 'Not enough coins!',
-                uc_selected: 'UC selected!', uc_sent: 'UC sent!',
-                select_packet: 'Select UC packet!', enter_id: 'Enter Game ID!',
-                invalid_id: 'ID must contain only numbers and first digit must be 5!',
-                copied: 'Link copied!', server_error: 'Server error!',
-                subscribe: 'Subscribe to the channel!', check: 'Check',
-                completed: 'Completed!', already_claimed: 'Already claimed!',
-                ad_watched: 'Ad watched! +100 Coin',
-                invalid_code: 'Invalid promo code!', limit_reached: 'Limit reached!',
-                already_used: 'You already used this code!', promo_success: 'Promo code activated!'
+                tap: 'TAP', tasks: 'TASKS', exchange: 'WITHDRAW', energy: 'ENERGY',
+                promo_code: 'PROMO CODE', activate: 'ACTIVATE',
+                watch_ad: 'Watch Ad', watch: 'Watch',
+                energy_empty: 'Energy empty!', not_enough_coins: 'Not enough coins!',
+                uc_selected: 'UC selected!', uc_sent: 'Request sent!',
+                select_packet: 'Select packet!', enter_id: 'Enter ID!',
+                invalid_id: 'First digit must be 5!',
+                server_error: 'Server error!', subscribe: 'Subscribe!',
+                check: 'Check', already_claimed: 'Already claimed!',
+                ad_watched: '+100 Coin!', daily_limit: 'Daily limit reached!',
+                invalid_code: 'Invalid code!', limit_reached: 'Limit reached!',
+                already_used: 'Code already used!', promo_success: 'Code activated!'
             }
         };
 
@@ -310,9 +259,7 @@
         function applyTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[currentLang]?.[key]) {
-                    el.textContent = translations[currentLang][key];
-                }
+                if (translations[currentLang]?.[key]) el.textContent = translations[currentLang][key];
             });
         }
 
@@ -321,19 +268,15 @@
             localStorage.setItem('language', lang);
             document.getElementById('langDropdown').classList.remove('active');
             applyTranslations();
-            updateUI();
             if (userData.telegram_id) {
                 fetch(`${API_URL}/api/user/update`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, language: lang })
                 }).catch(() => {});
             }
         }
 
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('active');
-        }
+        function toggleLangDropdown() { document.getElementById('langDropdown').classList.toggle('active'); }
 
         function showToast(text, type = 'success') {
             const old = document.querySelector('.toast');
@@ -349,17 +292,10 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            const navMap = {
-                'pageTap': 'navTap', 'pageBoost': 'navBoost', 'pageTasks': 'navTasks',
-                'pageUCExchange': 'navUCExchange', 'pageAdmin': 'navAdmin'
-            };
-            
+            const navMap = { 'pageTap': 'navTap', 'pageTasks': 'navTasks', 'pageUCExchange': 'navUCExchange', 'pageAdmin': 'navAdmin' };
             if (navMap[pageId]) document.getElementById(navMap[pageId]).classList.add('active');
-            
             if (pageId === 'pageAdmin') loadAdminStats();
             if (pageId === 'pageTasks') loadTasks();
-            if (pageId === 'pageProfile') loadProfile();
             updateUI();
         }
 
@@ -367,145 +303,100 @@
             document.getElementById('coinDisplay').textContent = (userData.coins || 0).toLocaleString();
             document.getElementById('energyValue').textContent = `${userData.energy || 0}/${MAX_ENERGY}`;
             document.getElementById('energyFill').style.width = `${((userData.energy || 0) / MAX_ENERGY) * 100}%`;
-            document.getElementById('referalCount').textContent = (userData.referrals || []).length;
-            document.getElementById('referalEarned').textContent = ((userData.referrals || []).length * REFERRAL_REWARD).toLocaleString();
-            document.getElementById('referalProgressFill').style.width = `${Math.min(100, ((userData.referrals || []).length / 1000) * 100)}%`;
-
-            const friendsContainer = document.getElementById('friendsListContainer');
-            friendsContainer.innerHTML = '';
-            if (!userData.referrals || userData.referrals.length === 0) {
-                friendsContainer.innerHTML = `<div style="text-align:center;color:var(--text-dim);padding:20px;">${t('no_friends')}</div>`;
-            } else {
-                userData.referrals.forEach(friend => {
-                    const div = document.createElement('div');
-                    div.className = 'friend-item';
-                    div.innerHTML = `<div class="friend-avatar">${(friend.username?.[0] || 'U').toUpperCase()}</div><div class="friend-name">${friend.username || 'User'}</div><div class="friend-reward">+${REFERRAL_REWARD} Coin</div>`;
-                    friendsContainer.appendChild(div);
-                });
-            }
-
-            if (userData.is_admin) {
-                document.getElementById('navAdmin').style.display = 'flex';
-            } else {
-                document.getElementById('navAdmin').style.display = 'none';
-            }
+            document.getElementById('adCountDisplay').textContent = `${userData.ad_count_today || 0}/${userData.ad_daily_limit || 5}`;
+            if (userData.is_admin) document.getElementById('navAdmin').style.display = 'flex';
+            else document.getElementById('navAdmin').style.display = 'none';
         }
 
         async function loadTasks() {
             try {
                 const response = await fetch(`${API_URL}/api/tasks`);
                 const data = await response.json();
-                if (data.success) {
-                    allTasks = data.tasks || [];
-                    renderTasks();
-                }
-            } catch (e) {
-                console.error('Load tasks error:', e);
-            }
+                if (data.success) { allTasks = data.tasks || []; renderTasks(); }
+            } catch (e) {}
         }
 
         function renderTasks() {
             const container = document.getElementById('tasksContainer');
             container.innerHTML = '';
-            
-            if (allTasks.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;">Vazifalar yo\'q</div>';
-                return;
-            }
-            
             allTasks.forEach(task => {
                 const completed = userData.tasks[task.id] || false;
                 const card = document.createElement('div');
                 card.className = 'task-card' + (completed ? ' completed' : '');
-                card.id = 'task_' + task.id;
                 card.innerHTML = `
-                    <div class="task-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/></svg></div>
+                    <div class="task-icon">📢</div>
                     <div class="task-info">
                         <div class="task-name">${task.title}</div>
-                        <div class="task-desc">${task.reward} COIN</div>
+                        <div class="task-desc"><img src="coin.png" class="coin-icon"> +${task.reward} Coin</div>
                     </div>
-                    <div class="task-check" style="display:${completed ? 'flex' : 'none'};">
-                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                    <div class="task-reward-icon" onclick="checkSubscription(${task.id})" style="${completed ? 'display:none;' : ''}">
-                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                    </div>
+                    <div class="task-check ${completed ? 'show' : ''}">✅</div>
+                    ${!completed ? `<button class="task-action-btn" onclick="checkSubscription(${task.id}, '${task.channel_url}')">${t('check')}</button>` : ''}
                 `;
                 container.appendChild(card);
             });
         }
 
-        async function checkSubscription(taskId) {
+        async function checkSubscription(taskId, channelUrl) {
+            if (channelUrl.startsWith('@')) window.open(`https://t.me/${channelUrl.substring(1)}`, '_blank');
+            else if (channelUrl.includes('t.me/')) window.open(channelUrl, '_blank');
+            
             try {
                 const response = await fetch(`${API_URL}/api/task/check-subscription`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, task_id: taskId })
                 });
                 const data = await response.json();
-                
                 if (data.success) {
-                    userData.coins = data.coins;
-                    userData.tasks[taskId] = true;
-                    showToast(`+${data.reward} Coin!`, 'success');
-                    updateUI();
-                    renderTasks();
-                } else if (data.error === 'not_subscribed') {
-                    showToast(t('subscribe'), 'error');
-                } else if (data.error === 'already_claimed') {
-                    showToast(t('already_claimed'), 'error');
-                }
-            } catch (e) {
-                showToast(t('server_error'), 'error');
-            }
+                    userData.coins = data.coins; userData.tasks[taskId] = true;
+                    showToast(`+${data.reward} Coin!`); updateUI(); renderTasks();
+                } else if (data.error === 'not_subscribed') showToast(t('subscribe'), 'error');
+                else if (data.error === 'already_claimed') showToast(t('already_claimed'), 'error');
+            } catch (e) { showToast(t('server_error'), 'error'); }
+        }
+
+        async function claimAdReward() {
+            try {
+                const response = await fetch(`${API_URL}/api/task/claim-ad`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    userData.coins = data.coins; userData.ad_count_today = data.ad_count_today;
+                    showToast(t('ad_watched')); updateUI();
+                } else if (data.error === 'daily_limit_reached') showToast(t('daily_limit'), 'error');
+                else if (data.error === 'cooldown') showToast('Keyinroq urinib ko\'ring!', 'error');
+            } catch (e) { showToast(t('server_error'), 'error'); }
         }
 
         async function redeemPromo() {
             const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
             if (!code) return;
-            
             try {
                 const response = await fetch(`${API_URL}/api/promo/redeem`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ init_data: tg.initData, code: code })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData, code })
                 });
                 const data = await response.json();
-                
                 if (data.success) {
                     userData.coins = data.coins;
-                    showToast(`${t('promo_success')} +${data.reward} Coin!`, 'success');
-                    document.getElementById('promoCodeInput').value = '';
-                    updateUI();
-                } else if (data.error === 'invalid_code') {
-                    showToast(t('invalid_code'), 'error');
-                } else if (data.error === 'limit_reached') {
-                    showToast(t('limit_reached'), 'error');
-                } else if (data.error === 'already_used') {
-                    showToast(t('already_used'), 'error');
-                }
-            } catch (e) {
-                showToast(t('server_error'), 'error');
-            }
+                    showToast(`${t('promo_success')} +${data.reward} Coin!`);
+                    document.getElementById('promoCodeInput').value = ''; updateUI();
+                } else if (data.error === 'invalid_code') showToast(t('invalid_code'), 'error');
+                else if (data.error === 'limit_reached') showToast(t('limit_reached'), 'error');
+                else if (data.error === 'already_used') showToast(t('already_used'), 'error');
+            } catch (e) { showToast(t('server_error'), 'error'); }
         }
 
-        function handleTap(event) {
-            if ((userData.energy || 0) <= 0) {
-                showToast(t('energy_empty'), 'error');
-                return;
-            }
-            
-            userData.coins += 1;
-            userData.energy--;
-            updateUI();
-            saveState();
+        function handleTap() {
+            if ((userData.energy || 0) <= 0) { showToast(t('energy_empty'), 'error'); return; }
+            userData.coins += 1; userData.energy--; updateUI(); saveState();
         }
 
         async function saveState() {
             try {
                 await fetch(`${API_URL}/api/user/update`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, coins: userData.coins, energy: userData.energy })
                 });
             } catch (e) {}
@@ -523,82 +414,50 @@
             const gameId = document.getElementById('gameIdInput').value.trim();
             if (!gameId) { showToast(t('enter_id'), 'error'); return; }
             if (!/^\d+$/.test(gameId) || gameId[0] !== '5') { showToast(t('invalid_id'), 'error'); return; }
-            
             const cost = (selectedUCAmount / UC_BASE_AMOUNT) * COIN_TO_UC_RATE;
             if ((userData.coins || 0) < cost) { showToast(t('not_enough_coins'), 'error'); return; }
-            
             try {
-                const response = await fetch(`${API_URL}/api/uc/exchange`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                const response = await fetch(`${API_URL}/api/withdraw`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, uc_amount: selectedUCAmount, game_id: gameId })
                 });
                 const data = await response.json();
                 if (data.success) {
                     userData.coins = data.coins;
-                    showToast(`${selectedUCAmount} UC ${t('uc_sent')}`, 'success');
-                    selectedUCAmount = 0;
-                    document.getElementById('gameIdInput').value = '';
+                    showToast(t('uc_sent'), 'success');
+                    selectedUCAmount = 0; document.getElementById('gameIdInput').value = '';
                     document.querySelectorAll('.uc-pack-card').forEach(c => c.classList.remove('selected'));
                     updateUI();
-                }
-            } catch (e) {
-                showToast(t('server_error'), 'error');
-            }
-        }
-
-        function copyReferalLink() {
-            navigator.clipboard.writeText(document.getElementById('referalLink').textContent)
-                .then(() => showToast(t('copied')));
+                } else showToast(data.error || t('server_error'), 'error');
+            } catch (e) { showToast(t('server_error'), 'error'); }
         }
 
         function openProfile() {
-            showPage('pageProfile');
-        }
-
-        function loadProfile() {
             const container = document.getElementById('profileInfo');
             container.innerHTML = `
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">Username</div>
-                    <div style="font-size:18px;font-weight:700;">@${userData.username || 'N/A'}</div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">Telegram ID</div>
-                    <div style="font-size:18px;font-weight:700;">${userData.telegram_id || 'N/A'}</div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">Coin</div>
-                    <div style="font-size:24px;font-weight:900;color:var(--gold);">${(userData.coins || 0).toLocaleString()}</div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">Energy</div>
-                    <div style="font-size:18px;font-weight:700;">${userData.energy || 0}/${MAX_ENERGY}</div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">UC</div>
-                    <div style="font-size:18px;font-weight:700;">${userData.uc || 0}</div>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <div style="color:var(--text-dim);font-size:12px;">Referrals</div>
-                    <div style="font-size:18px;font-weight:700;">${(userData.referrals || []).length}</div>
-                </div>
+                <div class="profile-info"><div class="profile-label">Username</div><div class="profile-value">@${userData.username || 'N/A'}</div></div>
+                <div class="profile-info"><div class="profile-label">Telegram ID</div><div class="profile-value">${userData.telegram_id || 'N/A'}</div></div>
+                <div class="profile-info"><div class="profile-label">Coin</div><div class="profile-value"><img src="coin.png" class="coin-icon"> ${(userData.coins || 0).toLocaleString()}</div></div>
+                <div class="profile-info"><div class="profile-label">Energy</div><div class="profile-value">${userData.energy || 0}/${MAX_ENERGY}</div></div>
+                <div class="profile-info"><div class="profile-label">UC</div><div class="profile-value">${userData.uc || 0}</div></div>
+                <div class="profile-info"><div class="profile-label">Referrals</div><div class="profile-value">${(userData.referrals || []).length}</div></div>
             `;
+            document.getElementById('profileModal').classList.add('active');
         }
+
+        function closeProfile() { document.getElementById('profileModal').classList.remove('active'); }
 
         async function loadAdminStats() {
             if (!userData.is_admin) return;
             try {
                 const response = await fetch(`${API_URL}/api/admin/statistics`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData })
                 });
                 const data = await response.json();
                 if (data.success) {
                     document.getElementById('adminTotalUsers').textContent = data.total_users;
                     document.getElementById('adminPendingRequests').textContent = data.pending_requests;
-                    document.getElementById('adminTotalTasks').textContent = data.total_tasks;
                 }
             } catch (e) {}
         }
@@ -607,84 +466,63 @@
             const title = document.getElementById('adminTaskTitle').value.trim();
             const link = document.getElementById('adminTaskLink').value.trim();
             const reward = parseInt(document.getElementById('adminTaskReward').value);
-            
             if (!title || !link || !reward) { showToast('Barcha maydonlarni to\'ldiring!', 'error'); return; }
-            
             try {
                 const response = await fetch(`${API_URL}/api/admin/add_task`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, title, channel_url: link, reward })
                 });
                 const data = await response.json();
                 if (data.success) {
-                    showToast('Vazifa qo\'shildi!', 'success');
+                    showToast('Vazifa qo\'shildi!');
                     document.getElementById('adminTaskTitle').value = '';
                     document.getElementById('adminTaskLink').value = '';
                     document.getElementById('adminTaskReward').value = '';
                     loadAdminStats();
                 }
-            } catch (e) { showToast(t('server_error'), 'error'); }
+            } catch (e) {}
         }
 
         async function adminAddPromo() {
             const code = document.getElementById('adminPromoCode').value.trim().toUpperCase();
             const reward = parseInt(document.getElementById('adminPromoReward').value);
             const limit = parseInt(document.getElementById('adminPromoLimit').value) || -1;
-            
             if (!code || !reward) { showToast('Barcha maydonlarni to\'ldiring!', 'error'); return; }
-            
             try {
                 const response = await fetch(`${API_URL}/api/admin/add_promo`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData, code, reward, max_uses: limit })
                 });
                 const data = await response.json();
                 if (data.success) {
-                    showToast('Promo code qo\'shildi!', 'success');
+                    showToast('Promo qo\'shildi!');
                     document.getElementById('adminPromoCode').value = '';
                     document.getElementById('adminPromoReward').value = '';
                     document.getElementById('adminPromoLimit').value = '';
                 }
-            } catch (e) { showToast(t('server_error'), 'error'); }
+            } catch (e) {}
         }
 
         function startEnergyRegen() {
             setInterval(() => {
-                if ((userData.energy || 0) < MAX_ENERGY) {
-                    userData.energy++;
-                    updateUI();
-                    saveState();
-                }
+                if ((userData.energy || 0) < MAX_ENERGY) { userData.energy++; updateUI(); saveState(); }
             }, ENERGY_REGEN_INTERVAL);
         }
 
         async function init() {
             try {
                 const response = await fetch(`${API_URL}/api/user/init`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData })
                 });
                 const data = await response.json();
-                
                 if (data.telegram_id) {
                     userData = { ...userData, ...data };
                     currentLang = data.language || localStorage.getItem('language') || 'uz';
                     localStorage.setItem('language', currentLang);
-                    
-                    if (tg.initDataUnsafe?.user?.id) {
-                        document.getElementById('referalLink').textContent = 
-                            `https://t.me/tapuc_bot?start=ref_${tg.initDataUnsafe.user.id}`;
-                    }
-                    
-                    applyTranslations();
-                    updateUI();
+                    applyTranslations(); updateUI();
                 }
-            } catch (e) {
-                console.error('Init error:', e);
-            }
+            } catch (e) { showToast(t('server_error'), 'error'); }
             startEnergyRegen();
         }
 
