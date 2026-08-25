@@ -940,7 +940,7 @@
         tg.expand();
 
         // BU YERGA O'Z SERVERINGIZ URL'INI YOZING
-        const API_URL = 'https://sizning-server.uz';
+        const API_URL = 'const API_URL = 'http://localhost:5500';
         
         const COIN_TO_UC_RATE = 10000;
         const UC_BASE_AMOUNT = 60;
@@ -1376,7 +1376,7 @@
                     
                     if (tg.initDataUnsafe?.user?.id) {
                         document.getElementById('referalLink').textContent = 
-                            `https://t.me/YourBot?start=ref_${tg.initDataUnsafe.user.id}`;
+                            `https://t.me/tapuc_bot?start=ref_${tg.initDataUnsafe.user.id}`;
                     }
                     
                     updateUI();
