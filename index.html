@@ -1,4 +1,3 @@
-<!-- index.html - TO'LIQ KOD -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -545,7 +544,6 @@
             box-shadow: 0 2px 10px rgba(245,197,24,0.2);
         }
 
-        /* ADMIN PANEL */
         .admin-section {
             background: var(--card);
             border: 2px solid var(--border);
@@ -773,7 +771,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- TOP BAR -->
         <div class="top-bar">
             <div class="top-left">
                 <div class="top-icon-wrap" onclick="toggleLangDropdown()">
@@ -805,7 +802,6 @@
             </div>
         </div>
 
-        <!-- BOSISH PAGE -->
         <div class="page active" id="pageTap">
             <div class="coin-area">
                 <div class="coin-display" id="coinDisplay">0</div>
@@ -824,7 +820,6 @@
             </div>
         </div>
 
-        <!-- REFERAL PAGE -->
         <div class="page" id="pageBoost">
             <div class="referal-section">
                 <div class="referal-title">👥 Referal Dastur</div>
@@ -843,7 +838,6 @@
             </div>
         </div>
 
-        <!-- VAZIFALAR PAGE -->
         <div class="page" id="pageTasks">
             <div class="task-card" onclick="claimAdReward()" id="adTask">
                 <div class="task-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
@@ -862,7 +856,6 @@
             </div>
         </div>
 
-        <!-- YECHISH PAGE -->
         <div class="page" id="pageUCExchange">
             <div class="uc-packs-grid">
                 <div class="uc-pack-card" onclick="selectUC(60)" id="ucCard60">
@@ -890,7 +883,6 @@
             <button class="exchange-btn" onclick="exchangeCoinToUC()">YECHISH</button>
         </div>
 
-        <!-- ADMIN PANEL (Faqat adminlar uchun) -->
         <div class="page" id="pageAdmin">
             <div class="admin-section">
                 <div class="admin-title">👑 ADMIN PANEL</div>
@@ -917,7 +909,6 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('pageTap')" id="navTap">
                 <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
@@ -948,12 +939,14 @@
         tg.ready();
         tg.expand();
 
-        const API_URL = 'http://localhost:5000'; // O'z server URL'ingizni qo'ying
+        // BU YERGA O'Z SERVERINGIZ URL'INI YOZING
+        const API_URL = 'https://sizning-server.uz';
+        
         const COIN_TO_UC_RATE = 10000;
         const UC_BASE_AMOUNT = 60;
         const REFERAL_REWARD = 100;
         const MAX_ENERGY = 500;
-        const ENERGY_REGEN_INTERVAL = 180000; // 3 minut
+        const ENERGY_REGEN_INTERVAL = 180000;
 
         let currentLang = 'uz';
         let userData = {
@@ -969,7 +962,6 @@
         };
         let selectedUCAmount = 0;
 
-        // Til tarjimalari
         const translations = {
             uz: {
                 energyEmpty: "Energiya tugadi!",
@@ -981,8 +973,8 @@
                 invalidGameId: "ID faqat raqam va birinchi raqami 5 bo'lishi kerak!",
                 referalCopied: "Havola nusxalandi!",
                 profileOpened: "Profil ochildi!",
-                taskCompleted: "Vazifa bajarildi!",
-                adReward: "Reklama mukofoti olindi!"
+                serverError: "Serverga ulanishda xatolik!",
+                serverUnavailable: "Server mavjud emas. Iltimos keyinroq urinib ko'ring!"
             },
             ru: {
                 energyEmpty: "Энергия закончилась!",
@@ -994,8 +986,8 @@
                 invalidGameId: "ID должен состоять только из цифр и первая цифра 5!",
                 referalCopied: "Ссылка скопирована!",
                 profileOpened: "Профиль открыт!",
-                taskCompleted: "Задание выполнено!",
-                adReward: "Награда за рекламу получена!"
+                serverError: "Ошибка подключения к серверу!",
+                serverUnavailable: "Сервер недоступен. Попробуйте позже!"
             },
             en: {
                 energyEmpty: "Energy is empty!",
@@ -1007,8 +999,8 @@
                 invalidGameId: "ID must contain only numbers and first digit must be 5!",
                 referalCopied: "Link copied!",
                 profileOpened: "Profile opened!",
-                taskCompleted: "Task completed!",
-                adReward: "Ad reward received!"
+                serverError: "Server connection error!",
+                serverUnavailable: "Server unavailable. Please try again later!"
             }
         };
 
@@ -1078,7 +1070,6 @@
                 });
             }
 
-            // Admin panel ko'rinishi
             if (userData.is_admin) {
                 document.getElementById('navAdmin').style.display = 'flex';
             } else {
@@ -1098,12 +1089,21 @@
 
         async function saveState() {
             try {
-                await fetch(`${API_URL}/api/user/update`, {
+                const response = await fetch(`${API_URL}/api/user/update`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ init_data: tg.initData, coins: userData.coins, energy: userData.energy })
+                    body: JSON.stringify({ 
+                        init_data: tg.initData, 
+                        coins: userData.coins, 
+                        energy: userData.energy 
+                    })
                 });
-            } catch (e) {}
+                if (!response.ok) {
+                    console.error('Save state failed:', response.status);
+                }
+            } catch (e) {
+                console.error('Save state error:', e);
+            }
         }
 
         function handleTap(event) {
@@ -1133,7 +1133,7 @@
             showToast(`${amount} UC ${t('ucSelected')}`);
         }
 
-        function exchangeCoinToUC() {
+        async function exchangeCoinToUC() {
             if (selectedUCAmount === 0) {
                 showToast(t('selectUCPacket'), 'error');
                 return;
@@ -1158,23 +1158,34 @@
                 return;
             }
             
-            userData.coins -= cost;
-            userData.uc += selectedUCAmount;
-            updateUI();
-            
-            fetch(`${API_URL}/api/uc/exchange`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ init_data: tg.initData, uc_amount: selectedUCAmount, game_id: gameId })
-            }).then(r => r.json()).then(data => {
+            try {
+                const response = await fetch(`${API_URL}/api/uc/exchange`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        init_data: tg.initData, 
+                        uc_amount: selectedUCAmount, 
+                        game_id: gameId 
+                    })
+                });
+                
+                const data = await response.json();
+                
                 if (data.success) {
-                    showToast(`${selectedUCAmount} UC ${t('ucSent')}`);
+                    userData.coins = data.coins;
+                    userData.uc = data.uc || userData.uc;
+                    updateUI();
+                    showToast(`${selectedUCAmount} UC ${t('ucSent')} ID: ${gameId}`);
+                    selectedUCAmount = 0;
+                    document.getElementById('gameIdInput').value = '';
+                    document.querySelectorAll('.uc-pack-card').forEach(c => c.classList.remove('selected'));
+                } else {
+                    showToast(data.error || t('serverError'), 'error');
                 }
-            }).catch(() => {});
-            
-            selectedUCAmount = 0;
-            document.getElementById('gameIdInput').value = '';
-            document.querySelectorAll('.uc-pack-card').forEach(c => c.classList.remove('selected'));
+            } catch (e) {
+                console.error('Exchange error:', e);
+                showToast(t('serverUnavailable'), 'error');
+            }
         }
 
         async function claimAdReward() {
@@ -1191,17 +1202,45 @@
                     showToast(`+${data.reward} Coin!`);
                 } else if (data.error === 'cooldown') {
                     showToast('Keyinroq urinib ko\'ring!', 'error');
+                } else {
+                    showToast(data.error || t('serverError'), 'error');
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Ad reward error:', e);
+                showToast(t('serverUnavailable'), 'error');
+            }
         }
 
         async function checkSubscription(taskId) {
-            showToast('Kanalga obuna bo\'ling!', 'error');
+            try {
+                const response = await fetch(`${API_URL}/api/task/check-subscription`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData, task_id: taskId })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    userData.coins = data.coins;
+                    updateUI();
+                    showToast(`+${data.reward} Coin!`);
+                    document.getElementById('taskChannel' + taskId).classList.add('completed');
+                } else if (data.error === 'not_subscribed') {
+                    showToast('Kanalga obuna bo\'ling!', 'error');
+                } else if (data.error === 'already_claimed') {
+                    showToast('Bu vazifa allaqachon bajarilgan!', 'error');
+                } else {
+                    showToast(data.error || t('serverError'), 'error');
+                }
+            } catch (e) {
+                console.error('Subscription check error:', e);
+                showToast(t('serverUnavailable'), 'error');
+            }
         }
 
         function copyReferalLink() {
             navigator.clipboard.writeText(document.getElementById('referalLink').textContent)
-                .then(() => showToast(t('referalCopied')));
+                .then(() => showToast(t('referalCopied')))
+                .catch(() => showToast(t('serverError'), 'error'));
         }
 
         function openProfile() {
@@ -1218,7 +1257,6 @@
             showToast(`Til: ${lang.toUpperCase()}`);
         }
 
-        // Admin funksiyalari
         async function loadAdminStats() {
             if (!userData.is_admin) return;
             try {
@@ -1233,7 +1271,9 @@
                     document.getElementById('adminPendingRequests').textContent = data.pending_requests;
                     document.getElementById('adminTotalTasks').textContent = data.total_tasks;
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Admin stats error:', e);
+            }
         }
 
         async function adminAddTask() {
@@ -1250,7 +1290,12 @@
                 const response = await fetch(`${API_URL}/api/admin/add_task`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ init_data: tg.initData, title, channel_url: link, reward })
+                    body: JSON.stringify({ 
+                        init_data: tg.initData, 
+                        title: title, 
+                        channel_url: link, 
+                        reward: reward 
+                    })
                 });
                 const data = await response.json();
                 if (data.success) {
@@ -1259,8 +1304,13 @@
                     document.getElementById('adminTaskLink').value = '';
                     document.getElementById('adminTaskReward').value = '';
                     loadAdminStats();
+                } else {
+                    showToast(data.error || t('serverError'), 'error');
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Add task error:', e);
+                showToast(t('serverUnavailable'), 'error');
+            }
         }
 
         async function adminSendAd() {
@@ -1275,22 +1325,25 @@
                 const response = await fetch(`${API_URL}/api/admin/send_ad`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ init_data: tg.initData, message })
+                    body: JSON.stringify({ init_data: tg.initData, message: message })
                 });
                 const data = await response.json();
                 if (data.success) {
                     showToast(`${data.sent_count} ta foydalanuvchiga yuborildi!`);
                     document.getElementById('adminAdText').value = '';
+                } else {
+                    showToast(data.error || t('serverError'), 'error');
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Send ad error:', e);
+                showToast(t('serverUnavailable'), 'error');
+            }
         }
 
-        // ID kiritishda faqat raqam
         document.getElementById('gameIdInput').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // Boshlash
         async function init() {
             try {
                 const response = await fetch(`${API_URL}/api/user/init`, {
@@ -1298,7 +1351,19 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ init_data: tg.initData })
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
                 const data = await response.json();
+                
+                if (data.error) {
+                    console.error('Init error:', data.error);
+                    showToast(t('serverError'), 'error');
+                    return;
+                }
+                
                 if (data.telegram_id) {
                     userData.telegram_id = data.telegram_id;
                     userData.coins = data.coins || 0;
@@ -1309,7 +1374,6 @@
                     userData.referrals = data.referrals || [];
                     userData.tasks = data.tasks || {};
                     
-                    // Referal havolani yangilash
                     if (tg.initDataUnsafe?.user?.id) {
                         document.getElementById('referalLink').textContent = 
                             `https://t.me/YourBot?start=ref_${tg.initDataUnsafe.user.id}`;
@@ -1318,7 +1382,8 @@
                     updateUI();
                 }
             } catch (e) {
-                console.error('Init error:', e);
+                console.error('Init fetch error:', e);
+                showToast(t('serverUnavailable'), 'error');
             }
             startEnergyRegen();
         }
