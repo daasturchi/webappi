@@ -1,4 +1,4 @@
-<!-- index.html -->
+<!-- index.html - TO'LIQ KOD -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -198,26 +198,9 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        .coin-button img.coin-center {
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            filter: drop-shadow(0 0 15px rgba(245,197,24,0.8));
-            z-index: 10;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .coin-display {
@@ -321,12 +304,6 @@
             color: var(--text-dim);
         }
 
-        .uc-pack-icon {
-            width: 20px;
-            height: 20px;
-            fill: var(--gold);
-        }
-
         .uc-pack-amount {
             font-size: 28px;
             font-weight: 900;
@@ -393,8 +370,6 @@
             stroke: #000;
             stroke-width: 2.5;
             fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
         }
 
         .referal-section {
@@ -570,7 +545,7 @@
             box-shadow: 0 2px 10px rgba(245,197,24,0.2);
         }
 
-        /* ADMIN PANEL STYLES */
+        /* ADMIN PANEL */
         .admin-section {
             background: var(--card);
             border: 2px solid var(--border);
@@ -633,6 +608,25 @@
             border-color: var(--gold);
         }
 
+        .admin-textarea {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 8px 0;
+            resize: none;
+            min-height: 80px;
+        }
+
+        .admin-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
         .admin-btn {
             width: 100%;
             background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
@@ -652,11 +646,6 @@
 
         .admin-btn:active {
             transform: scale(0.95);
-        }
-
-        .admin-btn-danger {
-            background: linear-gradient(135deg, #ff5252, #c62828);
-            box-shadow: 0 5px 20px rgba(255,82,82,0.3);
         }
 
         .bottom-nav {
@@ -795,14 +784,14 @@
                 </div>
                 
                 <div class="global-coin-display" id="globalCoinDisplay" style="display: none;">
-                    <img src="coin.png" alt="">
+                    <span style="font-size:20px;">🪙</span>
                     <span class="global-coin-value" id="globalCoinValue">0</span>
                 </div>
 
                 <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" onclick="changeLanguage('uz')">O'zbekcha</div>
-                    <div class="lang-option" onclick="changeLanguage('ru')">Русский</div>
-                    <div class="lang-option" onclick="changeLanguage('en')">English</div>
+                    <div class="lang-option" onclick="changeLanguage('uz')">🇺🇿 O'zbekcha</div>
+                    <div class="lang-option" onclick="changeLanguage('ru')">🇷🇺 Русский</div>
+                    <div class="lang-option" onclick="changeLanguage('en')">🇬🇧 English</div>
                 </div>
             </div>
             
@@ -820,20 +809,13 @@
         <div class="page active" id="pageTap">
             <div class="coin-area">
                 <div class="coin-display" id="coinDisplay">0</div>
-
                 <button class="coin-button" onclick="handleTap(event)">
-                    <img src="coin.png" alt="Coin" id="mainCoinImg">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='%23f5c518' stroke='%23d4a017' stroke-width='6'/%3E%3Ctext x='100' y='120' font-size='90' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23000'%3E¢%3C/text%3E%3C/svg%3E" alt="Coin">
                 </button>
             </div>
-
             <div class="energy-wrap">
                 <div class="energy-header">
-                    <span class="energy-label">
-                        <svg class="icon icon-sm" viewBox="0 0 24 24">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                        </svg>
-                        <span id="energyLabelText">ENERGY</span>
-                    </span>
+                    <span class="energy-label">⚡ ENERGIYA</span>
                     <span class="energy-value" id="energyValue">500/500</span>
                 </div>
                 <div class="energy-bar">
@@ -845,100 +827,38 @@
         <!-- REFERAL PAGE -->
         <div class="page" id="pageBoost">
             <div class="referal-section">
-                <div class="referal-title">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-                    </svg>
-                    <span id="referalTitle">Referal Dastur</span>
-                </div>
-                
-                <div class="referal-progress-bar">
-                    <div class="referal-progress-fill" id="referalProgressFill" style="width: 0%;"></div>
-                </div>
-                
+                <div class="referal-title">👥 Referal Dastur</div>
+                <div class="referal-progress-bar"><div class="referal-progress-fill" id="referalProgressFill" style="width: 0%;"></div></div>
                 <div class="referal-stats">
-                    <div class="referal-stat-item">
-                        <div class="referal-stat-value" id="referalCount">0</div>
-                        <div class="referal-stat-label" id="referalCountLabel">Takliflar</div>
-                    </div>
-                    <div class="referal-stat-item">
-                        <div class="referal-stat-value">1000</div>
-                        <div class="referal-stat-label" id="referalTargetLabel">Maqsad</div>
-                    </div>
-                    <div class="referal-stat-item">
-                        <div class="referal-stat-value" id="referalEarned">0</div>
-                        <div class="referal-stat-label" id="referalEarnedLabel">Yig'ilgan</div>
-                    </div>
+                    <div class="referal-stat-item"><div class="referal-stat-value" id="referalCount">0</div><div class="referal-stat-label">Takliflar</div></div>
+                    <div class="referal-stat-item"><div class="referal-stat-value">1000</div><div class="referal-stat-label">Maqsad</div></div>
+                    <div class="referal-stat-item"><div class="referal-stat-value" id="referalEarned">0</div><div class="referal-stat-label">Yig'ilgan</div></div>
                 </div>
-                
-                <div class="referal-link-box" id="referalLink">
-                    https://t.me/YourBot?start=ref_123456
-                </div>
-                
-                <button class="referal-btn" onclick="copyReferalLink()" id="referalBtn">
-                    Nusxa olish
-                </button>
+                <div class="referal-link-box" id="referalLink">https://t.me/YourBot?start=ref_123456</div>
+                <button class="referal-btn" onclick="copyReferalLink()">📋 Nusxa olish</button>
             </div>
-
             <div class="friends-list">
-                <div class="friends-list-title" id="friendsListTitle">Taklif qilgan do'stlaringiz</div>
+                <div class="friends-list-title">Taklif qilgan do'stlaringiz</div>
                 <div id="friendsListContainer"></div>
             </div>
         </div>
 
         <!-- VAZIFALAR PAGE -->
         <div class="page" id="pageTasks">
-            <div class="task-card" onclick="claimReward()" id="adTask">
-                <div class="task-icon">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                </div>
-                <div class="task-info">
-                    <div class="task-name" id="adTaskTitle">Reklama ko'rish</div>
-                    <div class="task-desc" id="adTaskDesc">100 COIN</div>
-                </div>
-                <div class="task-reward-icon">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6"/>
-                    </svg>
-                </div>
+            <div class="task-card" onclick="claimAdReward()" id="adTask">
+                <div class="task-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="task-info"><div class="task-name">Reklama ko'rish</div><div class="task-desc">100 COIN</div></div>
+                <div class="task-reward-icon"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
             </div>
-
-            <div class="task-card" onclick="checkSubscription('channel1', 500)" id="taskChannel1">
-                <div class="task-icon">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/>
-                    </svg>
-                </div>
-                <div class="task-info">
-                    <div class="task-name" id="taskChannel1Title">Kanalga obuna bo'lish</div>
-                    <div class="task-desc" id="taskChannel1Desc">50 COIN</div>
-                </div>
-                <div class="task-reward-icon">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6"/>
-                    </svg>
-                </div>
+            <div class="task-card" onclick="checkSubscription(1)" id="taskChannel1">
+                <div class="task-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/></svg></div>
+                <div class="task-info"><div class="task-name">Kanalga obuna bo'lish</div><div class="task-desc">50 COIN</div></div>
+                <div class="task-reward-icon"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
             </div>
-
-            <div class="task-card" onclick="checkSubscription('channel2', 1000)" id="taskChannel2">
-                <div class="task-icon">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/>
-                    </svg>
-                </div>
-                <div class="task-info">
-                    <div class="task-name" id="taskChannel2Title">Kanalga obuna bo'lish</div>
-                    <div class="task-desc" id="taskChannel2Desc">50 COIN</div>
-                </div>
-                <div class="task-reward-icon">
-                    <svg viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6"/>
-                    </svg>
-                </div>
+            <div class="task-card" onclick="checkSubscription(2)" id="taskChannel2">
+                <div class="task-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/></svg></div>
+                <div class="task-info"><div class="task-name">Kanalga obuna bo'lish</div><div class="task-desc">50 COIN</div></div>
+                <div class="task-reward-icon"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
             </div>
         </div>
 
@@ -946,83 +866,53 @@
         <div class="page" id="pageUCExchange">
             <div class="uc-packs-grid">
                 <div class="uc-pack-card" onclick="selectUC(60)" id="ucCard60">
-                    <div class="uc-pack-top">
-                        <span class="uc-pack-tag" id="uc60Tag">Starter</span>
-                    </div>
+                    <div class="uc-pack-top"><span class="uc-pack-tag">Starter</span></div>
                     <div class="uc-pack-amount">60 UC</div>
                     <div class="uc-pack-price">10,000 Coin</div>
                 </div>
-
                 <div class="uc-pack-card" onclick="selectUC(120)" id="ucCard120">
-                    <div class="uc-pack-top">
-                        <span class="uc-pack-tag" id="uc120Tag">Popular</span>
-                        <svg class="uc-pack-icon" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
-                    </div>
+                    <div class="uc-pack-top"><span class="uc-pack-tag">Popular</span>🔥</div>
                     <div class="uc-pack-amount">120 UC</div>
                     <div class="uc-pack-price">20,000 Coin</div>
                 </div>
-
                 <div class="uc-pack-card" onclick="selectUC(360)" id="ucCard360">
-                    <div class="uc-pack-top">
-                        <span class="uc-pack-tag" id="uc360Tag">Pro</span>
-                    </div>
+                    <div class="uc-pack-top"><span class="uc-pack-tag">Pro</span></div>
                     <div class="uc-pack-amount">360 UC</div>
                     <div class="uc-pack-price">60,000 Coin</div>
                 </div>
-
                 <div class="uc-pack-card" onclick="selectUC(720)" id="ucCard720">
-                    <div class="uc-pack-top">
-                        <span class="uc-pack-tag" id="uc720Tag">Elite</span>
-                        <svg class="uc-pack-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
+                    <div class="uc-pack-top"><span class="uc-pack-tag">Elite</span>⚡</div>
                     <div class="uc-pack-amount">720 UC</div>
                     <div class="uc-pack-price">120,000 Coin</div>
                 </div>
             </div>
-
-            <input type="text" class="uc-input" id="gameIdInput" placeholder="O'yin ID ni yozing..." maxlength="20" pattern="[0-9]*" inputmode="numeric">
-
-            <button class="exchange-btn" onclick="exchangeCoinToUC()" id="exchangeBtn">
-                YECHISH
-            </button>
+            <input type="text" class="uc-input" id="gameIdInput" placeholder="O'yin ID (birinchi raqam 5)" maxlength="10" pattern="[0-9]*" inputmode="numeric">
+            <button class="exchange-btn" onclick="exchangeCoinToUC()">YECHISH</button>
         </div>
 
-        <!-- ADMIN PANEL PAGE (Faqat adminlar uchun) -->
-        <div class="page" id="pageAdmin" style="display: none;">
+        <!-- ADMIN PANEL (Faqat adminlar uchun) -->
+        <div class="page" id="pageAdmin">
             <div class="admin-section">
                 <div class="admin-title">👑 ADMIN PANEL</div>
-                
                 <div class="admin-stats-grid">
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-value" id="adminTotalUsers">0</div>
-                        <div class="admin-stat-label">Foydalanuvchilar</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-value" id="adminPendingRequests">0</div>
-                        <div class="admin-stat-label">Kutilayotgan so'rovlar</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-value" id="adminTotalTasks">0</div>
-                        <div class="admin-stat-label">Vazifalar</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-value" id="adminTotalCoins">0</div>
-                        <div class="admin-stat-label">Jami Coin</div>
-                    </div>
+                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminTotalUsers">0</div><div class="admin-stat-label">Foydalanuvchilar</div></div>
+                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminPendingRequests">0</div><div class="admin-stat-label">So'rovlar</div></div>
+                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminTotalTasks">0</div><div class="admin-stat-label">Vazifalar</div></div>
+                    <div class="admin-stat-card"><div class="admin-stat-value" id="adminTotalCoins">0</div><div class="admin-stat-label">Jami Coin</div></div>
                 </div>
             </div>
 
             <div class="admin-section">
-                <div class="admin-title" style="font-size: 14px;">➕ VAZIFA QO'SHISH</div>
+                <div class="admin-title">➕ VAZIFA QO'SHISH</div>
                 <input type="text" class="admin-input" id="adminTaskTitle" placeholder="Vazifa nomi">
-                <input type="text" class="admin-input" id="adminTaskLink" placeholder="Kanal havolasi (masalan: @kanal)">
+                <input type="text" class="admin-input" id="adminTaskLink" placeholder="Kanal havolasi (@kanal)">
                 <input type="number" class="admin-input" id="adminTaskReward" placeholder="Mukofot (Coin)">
                 <button class="admin-btn" onclick="adminAddTask()">Vazifa qo'shish</button>
             </div>
 
             <div class="admin-section">
-                <div class="admin-title" style="font-size: 14px;">📢 REKLAMA YUBORISH</div>
-                <textarea class="admin-input" id="adminAdText" placeholder="Reklama matni..." rows="3"></textarea>
+                <div class="admin-title">📢 REKLAMA YUBORISH</div>
+                <textarea class="admin-textarea" id="adminAdText" placeholder="Reklama matnini yozing..."></textarea>
                 <button class="admin-btn" onclick="adminSendAd()">Reklama yuborish</button>
             </div>
         </div>
@@ -1030,45 +920,25 @@
         <!-- BOTTOM NAV -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('pageTap')" id="navTap">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v12M6 12h12"/>
-                </svg>
-                <span class="nav-label" id="navTapLabel">BOSISH</span>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
+                <span class="nav-label">BOSISH</span>
             </div>
             <div class="nav-item" onclick="showPage('pageBoost')" id="navBoost">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-                </svg>
-                <span class="nav-label" id="navBoostLabel">REFERAL</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                <span class="nav-label">REFERAL</span>
             </div>
             <div class="nav-item" onclick="showPage('pageTasks')" id="navTasks">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h6"/>
-                </svg>
-                <span class="nav-label" id="navTasksLabel">VAZIFALAR</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h6"/></svg>
+                <span class="nav-label">VAZIFALAR</span>
             </div>
             <div class="nav-item" onclick="showPage('pageUCExchange')" id="navUCExchange">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M17 2l4 4-4 4M3 11v-1a4 4 0 014-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 01-4 4H3"/>
-                </svg>
-                <span class="nav-label" id="navUCExchangeLabel">YECHISH</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11v-1a4 4 0 014-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 01-4 4H3"/></svg>
+                <span class="nav-label">YECHISH</span>
             </div>
             <div class="nav-item" onclick="showPage('pageAdmin')" id="navAdmin" style="display: none;">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
-                </svg>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
                 <span class="nav-label">ADMIN</span>
             </div>
-        </div>
-
-        <!-- LOADING -->
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <div class="loading-text" id="loadingText">Yuklanmoqda...</div>
         </div>
     </div>
 
@@ -1078,109 +948,19 @@
         tg.ready();
         tg.expand();
 
-        const API_URL = 'https://your-app.alwaysdata.net';
+        const API_URL = 'http://localhost:5000'; // O'z server URL'ingizni qo'ying
         const COIN_TO_UC_RATE = 10000;
-        const UC_AMOUNT = 60;
+        const UC_BASE_AMOUNT = 60;
         const REFERAL_REWARD = 100;
         const MAX_ENERGY = 500;
-        const ENERGY_REGEN_INTERVAL = 180000; // 3 minut (180000 ms)
-
-        const translations = {
-            uz: {
-                tap: "BOSISH", boost: "REFERAL", tasks: "VAZIFALAR", exchange: "YECHISH",
-                energy: "ENERGY",
-                adTaskTitle: "Reklama ko'rish", adTaskDesc: "Reklamani ko'ring va 100 Coin oling",
-                task1Title: "Kanalga obuna bo'lish", task1Desc: "@Standoff2AccountSavdo kanaliga obuna bo'ling",
-                task2Title: "Kanalga obuna bo'lish", task2Desc: "Ikkinchi kanalga obuna bo'ling",
-                select: "TANLASH", exchangeBtn: "YECHISH",
-                referalTitle: "Referal Dastur",
-                referalCountLabel: "Takliflar",
-                referalTargetLabel: "Maqsad",
-                referalEarnedLabel: "Yig'ilgan",
-                referalBtn: "Nusxa olish",
-                referalCopied: "Referal havola nusxalandi!",
-                friendsListTitle: "Taklif qilgan do'stlaringiz",
-                noFriends: "Hozircha do'stlar yo'q",
-                profileOpened: "Profil ochildi!",
-                energyEmpty: "Energiya tugadi!",
-                notEnoughCoins: "Coin yetarli emas!",
-                ucSelected: "UC tanlandi!",
-                ucSent: "UC yuborildi!",
-                selectUCPacket: "UC paketini tanlang!",
-                enterGameId: "O'yin ID ni kiriting!",
-                invalidGameId: "ID faqat raqamlardan iborat va birinchi raqami 5 bo'lishi kerak!",
-                serverError: "Serverga ulanishda xatolik!",
-                uc60Tag: "Starter",
-                uc120Tag: "Ommabop",
-                uc360Tag: "Pro",
-                uc720Tag: "Elita"
-            },
-            ru: {
-                tap: "ТАП", boost: "РЕФЕРАЛ", tasks: "ЗАДАНИЯ", exchange: "ВЫВОД",
-                energy: "ЭНЕРГИЯ",
-                adTaskTitle: "Смотреть рекламу", adTaskDesc: "Посмотрите рекламу и получите 100 монет",
-                task1Title: "Подписаться на канал", task1Desc: "Подпишитесь на @Standoff2AccountSavdo",
-                task2Title: "Подписаться на канал", task2Desc: "Подпишитесь на второй канал",
-                select: "ВЫБРАТЬ", exchangeBtn: "ВЫВОД",
-                referalTitle: "Реферальная программа",
-                referalCountLabel: "Приглашения",
-                referalTargetLabel: "Цель",
-                referalEarnedLabel: "Собрано",
-                referalBtn: "Копировать",
-                referalCopied: "Реферальная ссылка скопирована!",
-                friendsListTitle: "Приглашенные друзья",
-                noFriends: "Пока нет друзей",
-                profileOpened: "Профиль открыт!",
-                energyEmpty: "Энергия закончилась!",
-                notEnoughCoins: "Недостаточно монет!",
-                ucSelected: "UC выбрано!",
-                ucSent: "UC отправлено!",
-                selectUCPacket: "Выберите пакет UC!",
-                enterGameId: "Введите ID игры!",
-                invalidGameId: "ID должен состоять только из цифр и первая цифра должна быть 5!",
-                serverError: "Ошибка подключения к серверу!",
-                uc60Tag: "Стартер",
-                uc120Tag: "Популярный",
-                uc360Tag: "Про",
-                uc720Tag: "Элита"
-            },
-            en: {
-                tap: "TAP", boost: "REFERRAL", tasks: "TASKS", exchange: "WITHDRAW",
-                energy: "ENERGY",
-                adTaskTitle: "Watch Ad", adTaskDesc: "Watch ad and get 100 Coins",
-                task1Title: "Subscribe to Channel", task1Desc: "Subscribe to @Standoff2AccountSavdo",
-                task2Title: "Subscribe to Channel", task2Desc: "Subscribe to second channel",
-                select: "SELECT", exchangeBtn: "WITHDRAW",
-                referalTitle: "Referral Program",
-                referalCountLabel: "Invites",
-                referalTargetLabel: "Target",
-                referalEarnedLabel: "Earned",
-                referalBtn: "Copy",
-                referalCopied: "Referral link copied!",
-                friendsListTitle: "Invited Friends",
-                noFriends: "No friends yet",
-                profileOpened: "Profile opened!",
-                energyEmpty: "Energy is empty!",
-                notEnoughCoins: "Not enough coins!",
-                ucSelected: "UC selected!",
-                ucSent: "UC sent!",
-                selectUCPacket: "Select UC packet!",
-                enterGameId: "Enter Game ID!",
-                invalidGameId: "ID must contain only numbers and first digit must be 5!",
-                serverError: "Server connection error!",
-                uc60Tag: "Starter",
-                uc120Tag: "Popular",
-                uc360Tag: "Pro",
-                uc720Tag: "Elite"
-            }
-        };
+        const ENERGY_REGEN_INTERVAL = 180000; // 3 minut
 
         let currentLang = 'uz';
         let userData = {
             telegram_id: null,
             coins: 0,
             uc: 0,
-            energy: 500,
+            energy: MAX_ENERGY,
             tapPower: 1,
             total_ads_watched: 0,
             tasks: {},
@@ -1189,46 +969,61 @@
         };
         let selectedUCAmount = 0;
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            document.getElementById('langDropdown').classList.remove('active');
-            applyTranslations();
+        // Til tarjimalari
+        const translations = {
+            uz: {
+                energyEmpty: "Energiya tugadi!",
+                notEnoughCoins: "Coin yetarli emas!",
+                ucSelected: "UC tanlandi!",
+                ucSent: "UC yuborildi!",
+                selectUCPacket: "UC paketini tanlang!",
+                enterGameId: "O'yin ID ni kiriting!",
+                invalidGameId: "ID faqat raqam va birinchi raqami 5 bo'lishi kerak!",
+                referalCopied: "Havola nusxalandi!",
+                profileOpened: "Profil ochildi!",
+                taskCompleted: "Vazifa bajarildi!",
+                adReward: "Reklama mukofoti olindi!"
+            },
+            ru: {
+                energyEmpty: "Энергия закончилась!",
+                notEnoughCoins: "Недостаточно монет!",
+                ucSelected: "UC выбрано!",
+                ucSent: "UC отправлено!",
+                selectUCPacket: "Выберите пакет UC!",
+                enterGameId: "Введите ID игры!",
+                invalidGameId: "ID должен состоять только из цифр и первая цифра 5!",
+                referalCopied: "Ссылка скопирована!",
+                profileOpened: "Профиль открыт!",
+                taskCompleted: "Задание выполнено!",
+                adReward: "Награда за рекламу получена!"
+            },
+            en: {
+                energyEmpty: "Energy is empty!",
+                notEnoughCoins: "Not enough coins!",
+                ucSelected: "UC selected!",
+                ucSent: "UC sent!",
+                selectUCPacket: "Select UC packet!",
+                enterGameId: "Enter Game ID!",
+                invalidGameId: "ID must contain only numbers and first digit must be 5!",
+                referalCopied: "Link copied!",
+                profileOpened: "Profile opened!",
+                taskCompleted: "Task completed!",
+                adReward: "Ad reward received!"
+            }
+        };
+
+        function t(key) {
+            return translations[currentLang]?.[key] || key;
         }
 
-        function applyTranslations() {
-            const t = translations[currentLang];
-            
-            document.getElementById('navTapLabel').textContent = t.tap;
-            document.getElementById('navBoostLabel').textContent = t.boost;
-            document.getElementById('navTasksLabel').textContent = t.tasks;
-            document.getElementById('navUCExchangeLabel').textContent = t.exchange;
-            document.getElementById('energyLabelText').textContent = t.energy;
-            document.getElementById('adTaskTitle').textContent = t.adTaskTitle;
-            document.getElementById('adTaskDesc').textContent = t.adTaskDesc;
-            document.getElementById('taskChannel1Title').textContent = t.task1Title;
-            document.getElementById('taskChannel1Desc').textContent = t.task1Desc;
-            document.getElementById('taskChannel2Title').textContent = t.task2Title;
-            document.getElementById('taskChannel2Desc').textContent = t.task2Desc;
-            document.getElementById('uc60Tag').textContent = t.uc60Tag;
-            document.getElementById('uc120Tag').textContent = t.uc120Tag;
-            document.getElementById('uc360Tag').textContent = t.uc360Tag;
-            document.getElementById('uc720Tag').textContent = t.uc720Tag;
-            document.getElementById('exchangeBtn').textContent = t.exchangeBtn;
-            document.getElementById('referalTitle').textContent = t.referalTitle;
-            document.getElementById('referalCountLabel').textContent = t.referalCountLabel;
-            document.getElementById('referalTargetLabel').textContent = t.referalTargetLabel;
-            document.getElementById('referalEarnedLabel').textContent = t.referalEarnedLabel;
-            document.getElementById('referalBtn').textContent = t.referalBtn;
-            document.getElementById('friendsListTitle').textContent = t.friendsListTitle;
-        }
-
-        function toggleLangDropdown() {
-            const dropdown = document.getElementById('langDropdown');
-            dropdown.classList.toggle('active');
-        }
-
-        function openProfile() {
-            showToast(translations[currentLang].profileOpened, 'success');
+        function showToast(text, type = 'success') {
+            const old = document.querySelector('.toast');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = text;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
         }
 
         function showPage(pageId) {
@@ -1244,9 +1039,8 @@
                 'pageAdmin': 'navAdmin'
             };
             
-            const navId = navMap[pageId];
-            if (navId) {
-                document.getElementById(navId).classList.add('active');
+            if (navMap[pageId]) {
+                document.getElementById(navMap[pageId]).classList.add('active');
             }
             
             if (pageId === 'pageTap') {
@@ -1269,22 +1063,18 @@
             document.getElementById('energyFill').style.width = `${(userData.energy / MAX_ENERGY) * 100}%`;
             document.getElementById('referalCount').textContent = userData.referrals.length;
             document.getElementById('referalEarned').textContent = (userData.referrals.length * REFERAL_REWARD).toLocaleString();
-            document.getElementById('referalProgressFill').style.width = `${(userData.referrals.length / 1000) * 100}%`;
+            document.getElementById('referalProgressFill').style.width = `${Math.min(100, (userData.referrals.length / 1000) * 100)}%`;
 
             const friendsContainer = document.getElementById('friendsListContainer');
             friendsContainer.innerHTML = '';
             if (userData.referrals.length === 0) {
-                friendsContainer.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px;">${translations[currentLang].noFriends}</div>`;
+                friendsContainer.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;">Hozircha do\'stlar yo\'q</div>';
             } else {
                 userData.referrals.forEach(friend => {
-                    const friendItem = document.createElement('div');
-                    friendItem.className = 'friend-item';
-                    friendItem.innerHTML = `
-                        <div class="friend-avatar">${friend.username ? friend.username[0].toUpperCase() : 'U'}</div>
-                        <div class="friend-name">${friend.username || 'Foydalanuvchi'}</div>
-                        <div class="friend-reward">+${REFERAL_REWARD} Coin</div>
-                    `;
-                    friendsContainer.appendChild(friendItem);
+                    const div = document.createElement('div');
+                    div.className = 'friend-item';
+                    div.innerHTML = `<div class="friend-avatar">${(friend.username?.[0] || 'U').toUpperCase()}</div><div class="friend-name">${friend.username || 'Foydalanuvchi'}</div><div class="friend-reward">+${REFERAL_REWARD} Coin</div>`;
+                    friendsContainer.appendChild(div);
                 });
             }
 
@@ -1296,7 +1086,6 @@
             }
         }
 
-        // Energiya har 3 minutda bitta qo'shiladi
         function startEnergyRegen() {
             setInterval(() => {
                 if (userData.energy < MAX_ENERGY) {
@@ -1307,59 +1096,20 @@
             }, ENERGY_REGEN_INTERVAL);
         }
 
-        function showToast(text, type) {
-            const old = document.querySelector('.toast');
-            if (old) old.remove();
-            const toast = document.createElement('div');
-            toast.className = 'toast ' + type;
-            toast.textContent = text;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        }
-
-        function showLoading(text) {
-            document.getElementById('loadingText').textContent = text;
-            document.getElementById('loadingOverlay').classList.add('active');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
-        }
-
-        async function init() {
+        async function saveState() {
             try {
-                const response = await fetch(`${API_URL}/api/user/init`, {
+                await fetch(`${API_URL}/api/user/update`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ init_data: tg.initData })
+                    body: JSON.stringify({ init_data: tg.initData, coins: userData.coins, energy: userData.energy })
                 });
-                const data = await response.json();
-                if (data.telegram_id) {
-                    userData.telegram_id = data.telegram_id;
-                    userData.coins = data.coins || 0;
-                    userData.uc = data.uc || 0;
-                    userData.energy = Math.min(data.energy || 500, MAX_ENERGY);
-                    userData.tapPower = data.tap_power || 1;
-                    userData.total_ads_watched = data.total_ads_watched || 0;
-                    userData.tasks = data.tasks || {};
-                    userData.is_admin = data.is_admin || false;
-                    userData.referrals = data.referrals || [];
-                    updateUI();
-                }
-            } catch (e) {
-                console.error('Init error:', e);
-                userData.telegram_id = 123456;
-                userData.is_admin = false;
-                userData.referrals = [];
-                updateUI();
-            }
-            startEnergyRegen();
+            } catch (e) {}
         }
 
         function handleTap(event) {
-            if (userData.energy <= 0) { 
-                showToast(translations[currentLang].energyEmpty, 'error'); 
-                return; 
+            if (userData.energy <= 0) {
+                showToast(t('energyEmpty'), 'error');
+                return;
             }
             
             userData.coins += userData.tapPower;
@@ -1367,117 +1117,110 @@
             updateUI();
             saveState();
             
-            showCoinEffect(event);
-        }
-
-        function showCoinEffect(event) {
             const effect = document.createElement('div');
             effect.className = 'coin-tap-effect';
             effect.textContent = `+${userData.tapPower}`;
-            
-            if (event) {
-                effect.style.left = event.clientX + 'px';
-                effect.style.top = event.clientY + 'px';
-            } else {
-                effect.style.left = '50%';
-                effect.style.top = '50%';
-            }
-            
+            effect.style.left = (event.clientX || window.innerWidth / 2) + 'px';
+            effect.style.top = (event.clientY || window.innerHeight / 2) + 'px';
             document.body.appendChild(effect);
             setTimeout(() => effect.remove(), 600);
         }
 
-        function saveState() {
-            fetch(`${API_URL}/api/user/update`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    init_data: tg.initData, 
-                    coins: userData.coins, 
-                    energy: userData.energy 
-                })
-            }).catch(() => {});
-        }
-
-        function copyReferalLink() {
-            const link = document.getElementById('referalLink').textContent;
-            navigator.clipboard.writeText(link).then(() => {
-                showToast(translations[currentLang].referalCopied, 'success');
-            });
-        }
-
         function selectUC(amount) {
             selectedUCAmount = amount;
-            document.querySelectorAll('.uc-pack-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            const selectedCard = document.getElementById('ucCard' + amount);
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-            showToast(amount + ' UC ' + translations[currentLang].ucSelected, 'success');
+            document.querySelectorAll('.uc-pack-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('ucCard' + amount).classList.add('selected');
+            showToast(`${amount} UC ${t('ucSelected')}`);
         }
 
         function exchangeCoinToUC() {
             if (selectedUCAmount === 0) {
-                showToast(translations[currentLang].selectUCPacket, 'error');
+                showToast(t('selectUCPacket'), 'error');
                 return;
             }
             
             const gameId = document.getElementById('gameIdInput').value.trim();
             
-            // ID tekshirish: faqat raqam va birinchi raqam 5
-            if (gameId === '') {
-                showToast(translations[currentLang].enterGameId, 'error');
+            if (!gameId) {
+                showToast(t('enterGameId'), 'error');
                 return;
             }
             
-            if (!/^\d+$/.test(gameId)) {
-                showToast(translations[currentLang].invalidGameId, 'error');
+            if (!/^\d+$/.test(gameId) || gameId[0] !== '5') {
+                showToast(t('invalidGameId'), 'error');
                 return;
             }
             
-            if (gameId[0] !== '5') {
-                showToast(translations[currentLang].invalidGameId, 'error');
+            const cost = (selectedUCAmount / UC_BASE_AMOUNT) * COIN_TO_UC_RATE;
+            
+            if (userData.coins < cost) {
+                showToast(t('notEnoughCoins'), 'error');
                 return;
             }
             
-            const cost = (selectedUCAmount / UC_AMOUNT) * COIN_TO_UC_RATE;
+            userData.coins -= cost;
+            userData.uc += selectedUCAmount;
+            updateUI();
             
-            if (userData.coins >= cost) {
-                userData.coins -= cost;
-                userData.uc += selectedUCAmount;
-                updateUI();
-                
-                fetch(`${API_URL}/api/uc/exchange`, {
+            fetch(`${API_URL}/api/uc/exchange`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ init_data: tg.initData, uc_amount: selectedUCAmount, game_id: gameId })
+            }).then(r => r.json()).then(data => {
+                if (data.success) {
+                    showToast(`${selectedUCAmount} UC ${t('ucSent')}`);
+                }
+            }).catch(() => {});
+            
+            selectedUCAmount = 0;
+            document.getElementById('gameIdInput').value = '';
+            document.querySelectorAll('.uc-pack-card').forEach(c => c.classList.remove('selected'));
+        }
+
+        async function claimAdReward() {
+            try {
+                const response = await fetch(`${API_URL}/api/task/claim-ad`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        init_data: tg.initData,
-                        uc_amount: selectedUCAmount,
-                        game_id: gameId
-                    })
-                }).then(response => response.json())
-                  .then(data => {
-                    if (data.success) {
-                        showToast(`+${selectedUCAmount} UC ${translations[currentLang].ucSent} ID: ${gameId}`, 'success');
-                    }
-                }).catch(() => {});
-                
-                selectedUCAmount = 0;
-                document.getElementById('gameIdInput').value = '';
-                document.querySelectorAll('.uc-pack-card').forEach(card => {
-                    card.classList.remove('selected');
+                    body: JSON.stringify({ init_data: tg.initData })
                 });
-            } else {
-                showToast(translations[currentLang].notEnoughCoins, 'error');
-            }
+                const data = await response.json();
+                if (data.success) {
+                    userData.coins = data.coins;
+                    updateUI();
+                    showToast(`+${data.reward} Coin!`);
+                } else if (data.error === 'cooldown') {
+                    showToast('Keyinroq urinib ko\'ring!', 'error');
+                }
+            } catch (e) {}
+        }
+
+        async function checkSubscription(taskId) {
+            showToast('Kanalga obuna bo\'ling!', 'error');
+        }
+
+        function copyReferalLink() {
+            navigator.clipboard.writeText(document.getElementById('referalLink').textContent)
+                .then(() => showToast(t('referalCopied')));
+        }
+
+        function openProfile() {
+            showToast(t('profileOpened'));
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('active');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('langDropdown').classList.remove('active');
+            showToast(`Til: ${lang.toUpperCase()}`);
         }
 
         // Admin funksiyalari
         async function loadAdminStats() {
             if (!userData.is_admin) return;
-            
             try {
                 const response = await fetch(`${API_URL}/api/admin/statistics`, {
                     method: 'POST',
@@ -1490,9 +1233,7 @@
                     document.getElementById('adminPendingRequests').textContent = data.pending_requests;
                     document.getElementById('adminTotalTasks').textContent = data.total_tasks;
                 }
-            } catch (e) {
-                console.error('Admin stats error:', e);
-            }
+            } catch (e) {}
         }
 
         async function adminAddTask() {
@@ -1509,24 +1250,17 @@
                 const response = await fetch(`${API_URL}/api/admin/add_task`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        init_data: tg.initData,
-                        title: title,
-                        channel_url: link,
-                        reward: reward
-                    })
+                    body: JSON.stringify({ init_data: tg.initData, title, channel_url: link, reward })
                 });
                 const data = await response.json();
                 if (data.success) {
-                    showToast('Vazifa qo\'shildi!', 'success');
+                    showToast('Vazifa qo\'shildi!');
                     document.getElementById('adminTaskTitle').value = '';
                     document.getElementById('adminTaskLink').value = '';
                     document.getElementById('adminTaskReward').value = '';
                     loadAdminStats();
                 }
-            } catch (e) {
-                showToast('Xatolik!', 'error');
-            }
+            } catch (e) {}
         }
 
         async function adminSendAd() {
@@ -1541,48 +1275,54 @@
                 const response = await fetch(`${API_URL}/api/admin/send_ad`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        init_data: tg.initData,
-                        message: message
-                    })
+                    body: JSON.stringify({ init_data: tg.initData, message })
                 });
                 const data = await response.json();
                 if (data.success) {
-                    showToast(`${data.sent_count} ta foydalanuvchiga yuborildi!`, 'success');
+                    showToast(`${data.sent_count} ta foydalanuvchiga yuborildi!`);
                     document.getElementById('adminAdText').value = '';
                 }
-            } catch (e) {
-                showToast('Xatolik!', 'error');
-            }
+            } catch (e) {}
         }
 
-        function claimReward() {
-            fetch(`${API_URL}/api/task/claim-ad`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ init_data: tg.initData })
-            }).then(response => response.json())
-              .then(data => {
-                if (data.success) {
-                    userData.coins = data.coins;
-                    updateUI();
-                    showToast(`+${data.reward} Coin!`, 'success');
-                } else if (data.error === 'cooldown') {
-                    showToast('Keyinroq urinib ko\'ring!', 'error');
-                }
-            }).catch(() => {});
-        }
-
-        function checkSubscription(channel, reward) {
-            showToast('Kanalga obuna bo\'ling!', 'error');
-        }
-
-        // ID kiritishda faqat raqam kiritish
+        // ID kiritishda faqat raqam
         document.getElementById('gameIdInput').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        applyTranslations();
+        // Boshlash
+        async function init() {
+            try {
+                const response = await fetch(`${API_URL}/api/user/init`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ init_data: tg.initData })
+                });
+                const data = await response.json();
+                if (data.telegram_id) {
+                    userData.telegram_id = data.telegram_id;
+                    userData.coins = data.coins || 0;
+                    userData.uc = data.uc || 0;
+                    userData.energy = data.energy || MAX_ENERGY;
+                    userData.tapPower = data.tap_power || 1;
+                    userData.is_admin = data.is_admin || false;
+                    userData.referrals = data.referrals || [];
+                    userData.tasks = data.tasks || {};
+                    
+                    // Referal havolani yangilash
+                    if (tg.initDataUnsafe?.user?.id) {
+                        document.getElementById('referalLink').textContent = 
+                            `https://t.me/YourBot?start=ref_${tg.initDataUnsafe.user.id}`;
+                    }
+                    
+                    updateUI();
+                }
+            } catch (e) {
+                console.error('Init error:', e);
+            }
+            startEnergyRegen();
+        }
+
         init();
     </script>
 </body>
